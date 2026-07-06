@@ -1,0 +1,44 @@
+:root {
+  --primary: #22c55e;
+  --primary-dark: #16a34a;
+  --bg: #f8fafc;
+  --card: #ffffff;
+  --text: #0f172a;
+  --muted: #64748b;
+  --border: #e2e8f0;
+  --sidebar-width: 260px; /* Using a variable makes it easier to manage */
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Inter, Arial, sans-serif;
+}
+
+html, body {
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden; /* Prevents side-to-side scrolling */
+}
+
+/* 🔥 SIDEBAR FIX: Lock it to the left edge permanently */
+.sidebar {
+  position: fixed; 
+  top: 0;
+  left: 0;
+  width: var(--sidebar-width);
+  height: 100vh;
+  background: var(--card); /* Ensures the sidebar has a solid white background */
+  z-index: 1000; /* Keeps it layered above all charts and tables */
+  border-right: 1px solid var(--border); /* Matches the clean line in your dashboard */
+}
+
+/* 🔥 MAIN CONTENT FIX: Push it to the right */
+.main-content {
+  margin-left: var(--sidebar-width);
+  width: calc(100% - var(--sidebar-width)); 
+  padding: 30px; 
+  min-height: 100vh;
+  box-sizing: border-box;
+}

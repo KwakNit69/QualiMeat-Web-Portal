@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QualiMeat | Secure Access Gateway</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet" />
+    
+    <style>
+ 
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body, html {
+            height: 100%;
+            width: 100%;
+            background-color: #0b0f19; 
+            color: #ffffff;
+            overflow: hidden;
+        }
+
+   
+        .bg-grid {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+    
+        .container {
+            display: flex;
+            height: 100%;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+
+        .panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+            text-decoration: none;
+            position: relative;
+        }
+
+   
+        .admin-panel {
+            background: radial-gradient(circle at 30% 50%, rgba(30, 64, 175, 0.15) 0%, transparent 60%);
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .vendor-panel {
+            background: radial-gradient(circle at 70% 50%, rgba(153, 27, 27, 0.15) 0%, transparent 60%);
+        }
+
+   
+        .panel:hover {
+            flex: 1.15;
+        }
+        
+        .admin-panel:hover {
+            background: radial-gradient(circle at 30% 50%, rgba(37, 99, 235, 0.25) 0%, transparent 70%);
+        }
+
+        .vendor-panel:hover {
+            background: radial-gradient(circle at 70% 50%, rgba(220, 38, 38, 0.2) 0%, transparent 70%);
+        }
+
+
+        .glass-card {
+            background: rgba(20, 25, 35, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 24px;
+            padding: 50px 40px;
+            max-width: 420px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            transition: transform 0.4s ease, border-color 0.4s ease;
+        }
+
+        .panel:hover .glass-card {
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+
+        .icon-box {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 24px auto;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.4s ease;
+        }
+
+        .icon-box span {
+            font-size: 2.5rem;
+        }
+
+        .admin-panel .icon-box {
+            background: rgba(59, 130, 246, 0.1);
+            color: #60a5fa;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .vendor-panel .icon-box {
+            background: rgba(239, 68, 68, 0.1);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .panel:hover .icon-box {
+            transform: scale(1.1) translateY(-5px);
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        p.desc {
+            font-size: 0.95rem;
+            color: #94a3b8;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .action-link {
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: gap 0.3s ease;
+        }
+
+        .admin-panel .action-link { color: #60a5fa; }
+        .vendor-panel .action-link { color: #f87171; }
+
+        .panel:hover .action-link {
+            gap: 15px;
+        }
+
+
+        .brand-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            text-align: center;
+            pointer-events: none;
+        }
+
+        .brand-logo {
+            background-color: #0b0f19;
+            color: #fff;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 1.1rem;
+            letter-spacing: 4px;
+            box-shadow: 0 0 0 8px rgba(11, 15, 25, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        .brand-tagline {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            background: rgba(11, 15, 25, 0.8);
+            padding: 4px 12px;
+            border-radius: 10px;
+            backdrop-filter: blur(4px);
+        }
+
+
+        @media (max-width: 850px) {
+            .container { flex-direction: column; }
+            .panel:hover { flex: 1.05; }
+            body, html { overflow: auto; }
+            .panel { padding: 40px 20px; }
+            .brand-center { top: 10%; transform: translate(-50%, 0); }
+            .brand-tagline { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-grid"></div>
+
+    <div class="brand-center">
+        <div class="brand-logo">QualiMeat</div>
+        <div class="brand-tagline">Enterprise Quality & Compliance Ledger</div>
+    </div>
+
+    <div class="container">
+  
+        <a href="Admin-Portal-main/index.html" class="panel admin-panel">
+            <div class="glass-card">
+                <div class="icon-box">
+                    <span class="material-symbols-outlined">admin_panel_settings</span>
+                </div>
+                <h2>Admin Portal</h2>
+                <p class="desc">Manage global inspection workflows, monitor cold-chain logistics, and enforce system-wide compliance protocols.</p>
+                <div class="action-link">
+                    Enter Control Hub <span class="material-symbols-outlined">arrow_forward</span>
+                </div>
+            </div>
+        </a>
+
+        <a href="QualiMeat-Vendor-Portal-main/index.html" class="panel vendor-panel">
+            <div class="glass-card">
+                <div class="icon-box">
+                    <span class="material-symbols-outlined">storefront</span>
+                </div>
+                <h2>Vendor Portal</h2>
+                <p class="desc">Track inventory grading scores, review scheduled health inspections, and manage your retail quality ratings.</p>
+                <div class="action-link">
+                    Access Store Records <span class="material-symbols-outlined">arrow_forward</span>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+
+</body>
+</html>

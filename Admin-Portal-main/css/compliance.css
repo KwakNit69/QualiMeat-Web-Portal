@@ -1,0 +1,147 @@
+/* HEADER */
+.page-header {
+  margin-bottom: 2rem;
+}
+
+.page-header small {
+  color: #94a3b8;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.page-header h1 {
+  margin: 0.4rem 0 0;
+  font-size: 2.4rem;
+  font-weight: 800;
+}
+
+/* GRID */
+.report-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.8rem;
+}
+
+.report-card,
+.summary-card {
+  background: white;
+  border-radius: 24px;
+  padding: 1.6rem;
+  box-shadow: 0 8px 28px rgba(15, 23, 42, 0.05);
+  border: 1px solid #eef2f7;
+}
+
+.report-card h3,
+.summary-card h3 {
+  margin: 0 0 1.5rem;
+  font-size: 1.5rem;
+}
+
+.critical-card {
+  border-top: 4px solid #dc2626;
+}
+
+.warning-card {
+  border-top: 4px solid #f59e0b;
+}
+
+.report-item {
+  padding: 1rem 0;
+  border-bottom: 1px solid #e2e8f0;
+  font-weight: 700;
+  display: flex;
+  justify-content: space-between;
+}
+
+.report-item:last-child {
+  border-bottom: none;
+}
+
+/* TABLE */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  text-align: left;
+  padding: 1rem;
+  color: #64748b;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+td {
+  padding: 1rem;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+tbody tr:hover {
+  background: #f8fafc;
+}
+
+/* STATUS BADGES */
+.badge-critical {
+  background: #fee2e2;
+  color: #dc2626;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.badge-warning {
+  background: #fef3c7;
+  color: #d97706;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.badge-compliant {
+  background: #dcfce7;
+  color: #16a34a;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+/* =========================
+   SKELETON LOADER ANIMATION
+========================= */
+.skeleton {
+  background: #e2e5e7;
+  background-image: linear-gradient(
+    90deg, 
+    rgba(255, 255, 255, 0) 0, 
+    rgba(255, 255, 255, 0.4) 50%, 
+    rgba(255, 255, 255, 0) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite linear;
+  border-radius: 4px;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.sk-text { height: 16px; width: 100%; margin-bottom: 8px; }
+.sk-title { height: 24px; width: 60%; margin-bottom: 12px; }
+.sk-badge { height: 24px; width: 80px; border-radius: 12px; display: inline-block; margin-right: 8px; }
+.sk-chart { height: 250px; width: 100%; border-radius: 8px; }
+.sk-avatar { height: 40px; width: 40px; border-radius: 50%; }
+
+.skeleton-card {
+  background: white;
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  border: 1px solid #eee;
+}
+.skeleton-row td { padding: 12px; }

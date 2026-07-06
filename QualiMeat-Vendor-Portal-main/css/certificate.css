@@ -1,0 +1,170 @@
+/* 1. Sized exactly for A5 Landscape (Half-A4 Wide) */
+.certificate-paper {
+    width: 780px; 
+    min-height: auto; 
+    margin: 15px auto; 
+    background: white;
+    color: #111827; 
+    /* 🔥 Squeezed the top and bottom padding from 25px to 15px */
+    padding: 15px 40px; 
+    border: 1px solid #d1d5db;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif; 
+}
+
+/* OFFICIAL HEADER STYLES */
+.official-header {
+    text-align: center;
+    line-height: 1.1;
+    margin-bottom: 8px; /* Tightened */
+}
+.official-header p {
+    margin: 0;
+    font-size: 0.75rem; 
+}
+.official-header h3 {
+    margin: 4px 0 0 0;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.cert-title {
+    text-align: center;
+    color: #000;
+    margin-bottom: 8px; /* Tightened */
+    font-size: 1.05rem; 
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.official-wording {
+    text-align: justify;
+    line-height: 1.25; /* Tightened line height */
+    margin-bottom: 10px; /* Tightened */
+    font-size: 0.75rem; 
+    text-indent: 25px;
+}
+
+.meta-line {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px; /* Tightened */
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: #000;
+}
+
+/* TABLE - OPTIMIZED FOR MORE ROWS */
+.cert-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 10px; /* Tightened */
+    table-layout: fixed; 
+}
+
+.cert-table th,
+.cert-table td {
+    border: 1px solid #000;
+    /* 🔥 Crushed the vertical padding to 3px so 5-6 rows easily fit */
+    padding: 3px 4px; 
+    text-align: center;
+    font-size: 0.75rem; 
+    word-wrap: break-word;
+}
+
+.cert-table th {
+    background: #f3f4f6;
+    font-weight: bold;
+}
+
+/* COMPLIANCE WARNING BOXES */
+.compliance-note {
+    padding: 8px 12px; /* Tightened inside padding */
+    border-radius: 6px;
+    line-height: 1.2; /* Tightened text gap */
+    font-size: 0.75rem; 
+    margin-bottom: 10px; /* Tightened */
+}
+
+.compliance-note.warning {
+    background: #fef2f2;
+    border: 1px solid #f87171;
+    color: #b91c1c;
+}
+
+.compliance-note.safe {
+    background: #f0fdf4;
+    border: 1px solid #4ade80;
+    color: #166534;
+}
+
+/* SIGNATURE */
+.signature-section {
+    display: flex;
+    justify-content: flex-end; 
+    margin-top: 15px; /* Tightened */
+    color: #000;
+    /* 🔥 This tells the printer NEVER to slice this block in half! */
+    page-break-inside: avoid; 
+}
+
+.signature-box {
+    width: 220px;
+    text-align: center;
+}
+
+.signature-box h3 {
+    margin: 0;
+    font-size: 0.85rem; /* Slightly smaller name */
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.signature-line {
+    width: 100%;
+    border-top: 1px solid #000;
+    margin: 4px 0; /* Tightened */
+}
+
+.signature-box small {
+    display: block;
+    font-size: 0.7rem;
+}
+
+/* FOOTER & BUTTON */
+.footer-note {
+    margin-top: 15px; /* Tightened */
+    text-align: center;
+    font-size: 0.65rem;
+    color: #6b7280;
+}
+
+.print-btn {
+    margin-top: 15px;
+    width: 100%;
+    padding: 10px;
+    background: #16a34a;
+    color: white;
+    border: none;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* --- PRINTING RULES --- */
+@media print {
+    @page { 
+        size: A5 landscape; 
+        margin: 5mm; /* Minimum possible margin to save space */
+    }
+    body { background: white; padding: 0; margin: 0; }
+    global-header, .print-btn { display: none !important; }
+    
+    .certificate-paper {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        border: none;
+        page-break-inside: avoid;
+    }
+}

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meat Inspection Certificate</title>
+
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/certificate.css">
+    <script src="js/theme-init.js"></script>
+    <script src="js/header.js"></script>
+</head>
+<body>
+
+    <global-header back-url="javascript:history.back()"></global-header>
+
+    <div class="certificate-paper">
+
+        <!-- OFFICIAL LETTERHEAD -->
+        <div class="official-header">
+            <p>Republic of the Philippines</p>
+            <p>Province of Davao del Norte</p>
+            <p>City of Tagum</p>
+            <h3 style="margin-top: 5px;">CITY VETERINARY OFFICE</h3>
+        </div>
+
+        <h1 class="cert-title">MEAT INSPECTION CERTIFICATE</h1>
+
+        <!-- REPHRASED OFFICIAL WORDING -->
+        <p class="official-wording">
+            This certifies that the meat products described below have undergone official quality verification. 
+            At the time and date of inspection, the products cleared for display are found fit for human consumption 
+            and handled in accordance with the rules and regulations of the NMIS and the Department of Agriculture.
+        </p>
+
+        <div class="meta-line">
+            <span><strong>Stall No:</strong> <span id="certStall"></span></span>
+            <span><strong>Vendor:</strong> <span id="certVendor"></span></span>
+            <span><strong>Date:</strong> <span id="certDate"></span></span>
+        </div>
+
+        <!-- CENSUS TABLE -->
+        <table class="cert-table">
+            <thead>
+                <tr>
+                    <th>Meat Cut</th>
+                    <th>Total Inspected</th>
+                    <th>Fresh</th>
+                    <th style="color: #dc2626;">Spoiled</th>
+                </tr>
+            </thead>
+            <tbody id="certRows">
+                <!-- Aggregated data will be injected here -->
+            </tbody>
+        </table>
+
+        <div id="complianceNote"></div>
+
+        <div class="signature-section">
+            <div class="signature-box">
+                <h3 id="certInspector"></h3>
+                <div class="signature-line"></div>
+                <small>Authorized Meat Inspector</small>
+            </div>
+        </div>
+
+        <p class="footer-note">
+            Powered by QualiMeat Smart Inspection Compliance System.
+        </p>
+
+        <button class="print-btn" onclick="window.print()">
+            🖨️ Print Official Certificate
+        </button>
+    </div>
+
+    <script type="module" src="js/certificate.js"></script>
+</body>
+</html>
