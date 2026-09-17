@@ -61,3 +61,11 @@ tbody tr:hover { background: #F9FAFB; }
 .sk-text { height: 16px; width: 100%; margin-bottom: 8px; border-radius: 4px;}
 .sk-badge { height: 24px; width: 80px; border-radius: 12px; }
 .sk-row td { padding: 16px; }
+
+/* Page refinement: formal analytics and export surface */
+.report-card, .summary-card { padding:24px; }
+.top-card { border-top:3px solid var(--primary); }
+.warning-card { border-top:3px solid var(--accent); }
+.critical-card { border-top:3px solid var(--danger); }
+.export-btn { background:var(--primary); }
+@media (max-width:800px) { .report-grid { grid-template-columns:1fr; } }

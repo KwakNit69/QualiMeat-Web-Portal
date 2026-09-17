@@ -3,254 +3,534 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QualiMeat | Secure Access Gateway</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet" />
-    
+
+    <title>QualiMeat | Portal</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,300..700,0..1,0"
+        rel="stylesheet"
+    >
+
     <style>
- 
+        /* =====================================================
+           RESET
+        ===================================================== */
+
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Inter', sans-serif;
+            box-sizing: border-box;
         }
 
-        body, html {
-            height: 100%;
+        html,
+        body {
             width: 100%;
-            background-color: #0b0f19; 
-            color: #ffffff;
+            height: 100%;
+        }
+
+        body {
+            font-family: "Inter", sans-serif;
+            background: #ffffff;
+            color: #111111;
             overflow: hidden;
         }
 
-   
-        .bg-grid {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-image: 
-                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-            background-size: 40px 40px;
-            z-index: 0;
-            pointer-events: none;
+        a {
+            text-decoration: none;
+            color: inherit;
         }
 
-    
-        .container {
+
+        /* =====================================================
+           MAIN
+        ===================================================== */
+
+        .page {
+            min-height: 100vh;
             display: flex;
-            height: 100%;
-            width: 100%;
-            position: relative;
-            z-index: 1;
+            flex-direction: column;
         }
 
-        .panel {
+
+        /* =====================================================
+           HEADER
+        ===================================================== */
+
+        .header {
+            height: 78px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 48px;
+
+            border-bottom: 1px solid #eeeeee;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-mark {
+            width: 30px;
+            height: 30px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border: 1.5px solid #111111;
+            border-radius: 50%;
+
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .header-text {
+            font-size: 13px;
+            color: #888888;
+        }
+
+
+        /* =====================================================
+           CONTENT
+        ===================================================== */
+
+        .content {
             flex: 1;
+
             display: flex;
             flex-direction: column;
             justify-content: center;
-            align-items: center;
-            padding: 40px;
-            transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-            text-decoration: none;
-            position: relative;
-        }
 
-   
-        .admin-panel {
-            background: radial-gradient(circle at 30% 50%, rgba(30, 64, 175, 0.15) 0%, transparent 60%);
-            border-right: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .vendor-panel {
-            background: radial-gradient(circle at 70% 50%, rgba(153, 27, 27, 0.15) 0%, transparent 60%);
-        }
-
-   
-        .panel:hover {
-            flex: 1.15;
-        }
-        
-        .admin-panel:hover {
-            background: radial-gradient(circle at 30% 50%, rgba(37, 99, 235, 0.25) 0%, transparent 70%);
-        }
-
-        .vendor-panel:hover {
-            background: radial-gradient(circle at 70% 50%, rgba(220, 38, 38, 0.2) 0%, transparent 70%);
-        }
-
-
-        .glass-card {
-            background: rgba(20, 25, 35, 0.6);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 24px;
-            padding: 50px 40px;
-            max-width: 420px;
+            max-width: 1180px;
             width: 100%;
-            text-align: center;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-            transition: transform 0.4s ease, border-color 0.4s ease;
+
+            margin: 0 auto;
+            padding: 60px 48px;
         }
 
-        .panel:hover .glass-card {
-            transform: translateY(-5px);
-            border-color: rgba(255, 255, 255, 0.2);
+        .intro {
+            margin-bottom: 48px;
+        }
+
+        .eyebrow {
+            font-size: 12px;
+            font-weight: 600;
+
+            color: #888888;
+
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+
+            margin-bottom: 14px;
+        }
+
+        .intro h1 {
+            font-size: clamp(38px, 5vw, 64px);
+            line-height: 1;
+            font-weight: 600;
+            letter-spacing: -3px;
+
+            margin-bottom: 18px;
+        }
+
+        .intro p {
+            max-width: 560px;
+
+            font-size: 15px;
+            line-height: 1.7;
+
+            color: #777777;
         }
 
 
-        .icon-box {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 24px auto;
-            border-radius: 20px;
+        /* =====================================================
+           PORTALS
+        ===================================================== */
+
+        .portals {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+
+            border-top: 1px solid #dddddd;
+            border-bottom: 1px solid #dddddd;
+        }
+
+        .portal {
+            min-height: 260px;
+
+            padding: 34px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+
+            transition:
+                background-color 0.25s ease,
+                transform 0.25s ease;
+        }
+
+        .portal + .portal {
+            border-left: 1px solid #dddddd;
+        }
+
+        .portal:hover {
+            background: #fafafa;
+        }
+
+        .portal-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .portal-icon {
+            width: 44px;
+            height: 44px;
+
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: transform 0.4s ease;
+
+            border: 1px solid #dddddd;
+            border-radius: 10px;
+
+            color: #333333;
         }
 
-        .icon-box span {
-            font-size: 2.5rem;
+        .portal-icon span {
+            font-size: 23px;
         }
 
-        .admin-panel .icon-box {
-            background: rgba(59, 130, 246, 0.1);
-            color: #60a5fa;
-            border: 1px solid rgba(59, 130, 246, 0.2);
+        .portal-number {
+            font-size: 12px;
+            color: #aaaaaa;
         }
 
-        .vendor-panel .icon-box {
-            background: rgba(239, 68, 68, 0.1);
-            color: #f87171;
-            border: 1px solid rgba(239, 68, 68, 0.2);
+        .portal-content {
+            margin-top: 40px;
         }
 
-        .panel:hover .icon-box {
-            transform: scale(1.1) translateY(-5px);
-        }
-
-        h2 {
-            font-size: 1.8rem;
-            font-weight: 800;
-            letter-spacing: 1px;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-        }
-
-        p.desc {
-            font-size: 0.95rem;
-            color: #94a3b8;
-            line-height: 1.6;
-            margin-bottom: 30px;
-        }
-
-        .action-link {
-            font-size: 0.9rem;
+        .portal h2 {
+            font-size: 25px;
             font-weight: 600;
+            letter-spacing: -0.8px;
+
+            margin-bottom: 10px;
+        }
+
+        .portal p {
+            max-width: 430px;
+
+            color: #777777;
+
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .portal-action {
+            margin-top: 28px;
+
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: gap 0.3s ease;
+
+            font-size: 13px;
+            font-weight: 600;
+
+            color: #111111;
+
+            transition: gap 0.25s ease;
         }
 
-        .admin-panel .action-link { color: #60a5fa; }
-        .vendor-panel .action-link { color: #f87171; }
-
-        .panel:hover .action-link {
-            gap: 15px;
+        .portal:hover .portal-action {
+            gap: 14px;
         }
 
-
-        .brand-center {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 10;
-            text-align: center;
-            pointer-events: none;
-        }
-
-        .brand-logo {
-            background-color: #0b0f19;
-            color: #fff;
-            padding: 12px 30px;
-            border-radius: 50px;
-            font-weight: 800;
-            font-size: 1.1rem;
-            letter-spacing: 4px;
-            box-shadow: 0 0 0 8px rgba(11, 15, 25, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            text-transform: uppercase;
-            margin-bottom: 15px;
-            display: inline-block;
-        }
-
-        .brand-tagline {
-            font-size: 0.8rem;
-            color: #94a3b8;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            background: rgba(11, 15, 25, 0.8);
-            padding: 4px 12px;
-            border-radius: 10px;
-            backdrop-filter: blur(4px);
+        .portal-action span {
+            font-size: 18px;
         }
 
 
-        @media (max-width: 850px) {
-            .container { flex-direction: column; }
-            .panel:hover { flex: 1.05; }
-            body, html { overflow: auto; }
-            .panel { padding: 40px 20px; }
-            .brand-center { top: 10%; transform: translate(-50%, 0); }
-            .brand-tagline { display: none; }
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        .footer {
+            height: 65px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 48px;
+
+            color: #999999;
+
+            font-size: 11px;
+
+            border-top: 1px solid #eeeeee;
         }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 700px) {
+
+            body {
+                overflow: auto;
+            }
+
+            .header {
+                height: 68px;
+                padding: 0 24px;
+            }
+
+            .header-text {
+                display: none;
+            }
+
+            .content {
+                padding: 50px 24px;
+            }
+
+            .intro {
+                margin-bottom: 35px;
+            }
+
+            .intro h1 {
+                font-size: 42px;
+                letter-spacing: -2px;
+            }
+
+            .intro p {
+                font-size: 14px;
+            }
+
+            .portals {
+                grid-template-columns: 1fr;
+            }
+
+            .portal {
+                min-height: 230px;
+                padding: 28px;
+            }
+
+            .portal + .portal {
+                border-left: none;
+                border-top: 1px solid #dddddd;
+            }
+
+            .footer {
+                padding: 0 24px;
+            }
+        }
+
+        /* QualiMeat public access gateway */
+        :root { --primary:#087A4B; --primary-dark:#075A38; --primary-light:#EAF7F0; --blue:#1769AA; --ink:#17211C; --muted:#66736C; --border:#E2E9E5; --canvas:#F7F9F8; }
+        body { background:var(--canvas); color:var(--ink); }
+        .header { background:#fff; border-color:var(--border); }
+        .logo { color:var(--primary); }
+        .logo-mark { border-color:var(--primary); color:var(--primary); background:var(--primary-light); }
+        .header-text, .eyebrow, .intro p, .footer { color:var(--muted); }
+        .eyebrow { color:var(--primary); font-weight:700; }
+        .portals { border-color:var(--border); gap:20px; border:0; }
+        .portal { min-height:290px; padding:32px; background:#fff; border:1px solid var(--border) !important; border-radius:12px; box-shadow:0 1px 3px rgba(23,33,28,.05); }
+        .portal + .portal { border-left:1px solid var(--border); }
+        .portal:hover { background:#fff; border-color:#b8d8c7 !important; transform:translateY(-3px); box-shadow:0 8px 24px rgba(23,33,28,.07); }
+        .portal-icon { border-color:#cbe5d6; background:var(--primary-light); color:var(--primary); }
+        .portal:last-child .portal-icon { background:#EAF3FB; color:var(--blue); border-color:#cddfed; }
+        .portal-number { color:var(--primary); font-weight:700; }
+        .portal h2, .portal-action { color:var(--ink); }
+        .portal-action { color:var(--primary); }
+        .footer { background:#fff; border-color:var(--border); }
     </style>
 </head>
+
 <body>
 
-    <div class="bg-grid"></div>
+<div class="page">
 
-    <div class="brand-center">
-        <div class="brand-logo">QualiMeat</div>
-        <div class="brand-tagline">Enterprise Quality & Compliance Ledger</div>
-    </div>
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
 
-    <div class="container">
-  
-        <a href="Admin-Portal-main/index.html" class="panel admin-panel">
-            <div class="glass-card">
-                <div class="icon-box">
-                    <span class="material-symbols-outlined">admin_panel_settings</span>
-                </div>
-                <h2>Admin Portal</h2>
-                <p class="desc">Manage global inspection workflows, monitor cold-chain logistics, and enforce system-wide compliance protocols.</p>
-                <div class="action-link">
-                    Enter Control Hub <span class="material-symbols-outlined">arrow_forward</span>
-                </div>
+    <header class="header">
+
+        <div class="logo">
+            <div class="logo-mark">Q</div>
+            <span>QualiMeat</span>
+        </div>
+
+        <div class="header-text">
+            Meat Quality Management System
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         CONTENT
+    ====================================================== -->
+
+    <main class="content">
+
+        <section class="intro">
+
+            <div class="eyebrow">
+                Secure Access
             </div>
-        </a>
 
-        <a href="QualiMeat-Vendor-Portal-main/index.html" class="panel vendor-panel">
-            <div class="glass-card">
-                <div class="icon-box">
-                    <span class="material-symbols-outlined">storefront</span>
+            <h1>
+                Choose your portal.
+            </h1>
+
+            <p>
+                Access the QualiMeat platform based on your role.
+                Manage quality records, inspections, inventory,
+                and meat freshness information from one place.
+            </p>
+
+        </section>
+
+
+        <!-- =================================================
+             PORTALS
+        ================================================== -->
+
+        <section class="portals">
+
+            <!-- ADMIN -->
+
+            <a
+                href="Admin-Portal-main/index.html"
+                class="portal"
+            >
+
+                <div class="portal-top">
+
+                    <div class="portal-icon">
+                        <span class="material-symbols-outlined">
+                            admin_panel_settings
+                        </span>
+                    </div>
+
+                    <div class="portal-number">
+                        01
+                    </div>
+
                 </div>
-                <h2>Vendor Portal</h2>
-                <p class="desc">Track inventory grading scores, review scheduled health inspections, and manage your retail quality ratings.</p>
-                <div class="action-link">
-                    Access Store Records <span class="material-symbols-outlined">arrow_forward</span>
+
+
+                <div class="portal-content">
+
+                    <h2>
+                        Admin Portal
+                    </h2>
+
+                    <p>
+                        Manage inspections, quality records,
+                        cold-chain monitoring, and system-wide
+                        compliance.
+                    </p>
+
+                    <div class="portal-action">
+
+                        Enter Admin Portal
+
+                        <span class="material-symbols-outlined">
+                            arrow_forward
+                        </span>
+
+                    </div>
+
                 </div>
-            </div>
-        </a>
-        
-    </div>
+
+            </a>
+
+
+            <!-- VENDOR -->
+
+            <a
+                href="QualiMeat-Vendor-Portal-main/index.html"
+                class="portal"
+            >
+
+                <div class="portal-top">
+
+                    <div class="portal-icon">
+                        <span class="material-symbols-outlined">
+                            storefront
+                        </span>
+                    </div>
+
+                    <div class="portal-number">
+                        02
+                    </div>
+
+                </div>
+
+
+                <div class="portal-content">
+
+                    <h2>
+                        Vendor Portal
+                    </h2>
+
+                    <p>
+                        View inventory, freshness classifications,
+                        inspection records, and quality ratings.
+                    </p>
+
+                    <div class="portal-action">
+
+                        Enter Vendor Portal
+
+                        <span class="material-symbols-outlined">
+                            arrow_forward
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </section>
+
+    </main>
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="footer">
+
+        <span>
+            © 2026 QualiMeat
+        </span>
+
+        <span>
+            Quality • Freshness • Compliance
+        </span>
+
+    </footer>
+
+</div>
 
 </body>
 </html>

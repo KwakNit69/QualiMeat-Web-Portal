@@ -111,13 +111,9 @@ async function loadDetails() {
                     });
                 }
 
-                // Temporary Mock Evidence (if database doesn't have URLs yet)
-                if (sessionEvidence.length === 0) {
-                    sessionEvidence = [
-                        { cut: "Liempo", label: "SPOILED", imageUrl: "https://images.unsplash.com/photo-1602491453631-e2a56cb1d0f1?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80" },
-                        { cut: "Liempo", label: "FRESH", imageUrl: "https://images.unsplash.com/photo-1599921841143-819065a55cc6?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80" }
-                    ];
-                }
+                // Evidence is shown only when it exists in the inspection record.
+                // An empty modal communicates that no photo was captured instead of
+                // presenting illustrative images as official inspection evidence.
 
                 if (hasSpoiled) flaggedCount++;
 

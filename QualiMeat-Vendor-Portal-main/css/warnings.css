@@ -69,3 +69,13 @@ body {
   font-size: 12px;
   font-weight: 700;
 }
+
+/* Page refinement: clear warning triage without visual noise. */
+.warning-layout { max-width:1120px; margin:0 auto; padding:32px clamp(16px,4vw,48px); }
+.summary-card { border-top:3px solid var(--accent); }
+.summary-card h2 { color:var(--primary); font-size:2rem; }
+.warning-card { border-left-color:var(--danger); }
+.warning-header { color:var(--text); }
+.cut-item { border-color:var(--border); }
+.badge { background:var(--danger-light); color:var(--danger); }
+@media (max-width:600px) { .warning-layout { padding:22px 14px; } .warning-header { flex-direction:column; gap:4px; } }

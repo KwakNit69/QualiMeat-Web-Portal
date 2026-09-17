@@ -168,3 +168,11 @@
         page-break-inside: avoid;
     }
 }
+
+/* Page refinement: printable, official record hierarchy. */
+.certificate-paper { border:1px solid var(--border); border-radius:var(--radius-md); box-shadow:var(--shadow-md); }
+.official-header { color:var(--primary-dark); }
+.cert-title { color:var(--text); border-color:var(--primary); }
+.cert-table th { background:var(--primary-light); color:var(--primary-dark); }
+.print-btn { background:var(--primary); border-radius:var(--radius-sm); }
+@media (max-width:600px) { .certificate-paper { margin:16px; padding:24px 18px; } .meta-line { flex-direction:column; gap:8px; } }

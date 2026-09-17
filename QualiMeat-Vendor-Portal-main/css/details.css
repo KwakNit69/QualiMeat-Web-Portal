@@ -129,3 +129,11 @@
     .logs-list { grid-template-columns: 1fr; }
     .vendor-summary-card { flex-direction: column; text-align: center; }
 }
+
+/* Page refinement: evidence is structured as a readable official record. */
+.details-layout { max-width:1280px; padding:32px clamp(16px,4vw,48px); }
+.logs-section h3 { text-transform:none; letter-spacing:-.01em; font-size:1.25rem; }
+.log-card { border-radius:var(--radius-md); }
+.evidence-btn { color:var(--primary-dark); border-color:#bdd8c9; background:var(--primary-light); }
+.evidence-table th { background:#F3F7F4; }
+@media (max-width:600px) { .details-layout { padding:20px 14px; } .vendor-left { flex-direction:column; } .summary-stats { flex-direction:column; } }
