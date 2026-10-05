@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vendor Compliance Monitoring</title>
+
+  <link rel="stylesheet" href="css/global.css" /> 
+  <link rel="stylesheet" href="css/sidebar.css" /> <link rel="stylesheet" href="css/compliance.css" />
+</head>
+<body>
+  
+  <div id="sidebar-container" class="sidebar"></div>
+
+  <main class="main-content">
+    
+    <header class="page-header">
+      <div>
+        <small>COMPLIANCE / FOOD SAFETY</small>
+        <h1>Vendor Compliance Monitoring</h1>
+      </div>
+    </header>
+
+    <section class="report-grid">
+      <div class="report-card critical-card">
+        <h3>Critical Vendors</h3>
+        <div id="criticalList"></div>
+      </div>
+
+      <div class="report-card warning-card">
+        <h3>Warning Vendors</h3>
+        <div id="warningList"></div>
+      </div>
+    </section>
+
+    <section class="summary-card">
+      <h3>Compliance Summary</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Vendor</th>
+            <th>Spoiled Sessions</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="complianceTableBody"></tbody>
+      </table>
+    </section>
+    
+  </main>
+
+  <script type="module" src="js/sidebar.js"></script>
+  <script type="module" src="js/compliance.js"></script>
+</body>
+</html>
