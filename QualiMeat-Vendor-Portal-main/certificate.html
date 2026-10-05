@@ -9,8 +9,17 @@
     <link rel="stylesheet" href="css/certificate.css">
     <script src="js/theme-init.js"></script>
     <script src="js/header.js"></script>
+    <link rel="stylesheet" href="css/redesign.css">
+    <link rel="stylesheet" href="css/mockup-theme.css">
+    <link rel="stylesheet" href="css/vendor-v2.css">
+    <link rel="stylesheet" href="css/premium.css">
+
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 </head>
-<body>
+<body class="certificate-body">
 
     <global-header back-url="javascript:history.back()"></global-header>
 
@@ -38,6 +47,8 @@
             <span><strong>Vendor:</strong> <span id="certVendor"></span></span>
             <span><strong>Date:</strong> <span id="certDate"></span></span>
         </div>
+
+        <div id="certificateMeta" style="margin: 12px 0 20px; font-size: 0.92rem;"></div>
 
         <!-- CENSUS TABLE -->
         <table class="cert-table">
@@ -69,7 +80,7 @@
         </p>
 
         <button class="print-btn" onclick="window.print()">
-            🖨️ Print Official Certificate
+            <span class="material-symbols-outlined" aria-hidden="true">print</span> Print official certificate
         </button>
     </div>
 

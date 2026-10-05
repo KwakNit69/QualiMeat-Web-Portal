@@ -1,7 +1,11 @@
 import { db } from "./firebase-config.js";
 import {
+    collection,
     doc,
-    getDoc
+    getDoc,
+    getDocs,
+    query,
+    where
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 async function loadCertificate() {
@@ -10,12 +14,35 @@ async function loadCertificate() {
 
     if (!sessionId) return;
 
-    const ref = doc(db, "inspections", sessionId);
+    const ref = doc(db, "publicInspectionLogs", sessionId);
     const snap = await getDoc(ref);
 
     if (!snap.exists()) return;
 
     const data = snap.data();
+
+    // Verify whether this inspection has a public certificate record.
+    const certificateQuery = query(
+        collection(db, "publicCertificates"),
+        where("inspectionId", "==", sessionId)
+    );
+    const certificateSnap = await getDocs(certificateQuery);
+    const certificateMeta = document.getElementById("certificateMeta");
+
+    if (!certificateSnap.empty) {
+        const certificateDoc = certificateSnap.docs[0];
+        const certificate = certificateDoc.data();
+        const validUntil = certificate.validUntil?.toDate
+            ? certificate.validUntil.toDate().toLocaleDateString()
+            : "-";
+        certificateMeta.innerHTML = `
+            <strong>Certificate ID:</strong> ${certificate.certificateId || certificateDoc.id}
+            &nbsp; • &nbsp; <strong>Status:</strong> ${certificate.status || "Active"}
+            &nbsp; • &nbsp; <strong>Valid Until:</strong> ${validUntil}
+        `;
+    } else {
+        certificateMeta.innerHTML = `<strong>Certificate status:</strong> No active public certificate was issued for this inspection.`;
+    }
 
     // Populate Metadata
     document.getElementById("certInspector").textContent = data.inspectorName || "N/A";

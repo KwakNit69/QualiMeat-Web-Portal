@@ -5,7 +5,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 async function loadWarnings() {
-  const snapshot = await getDocs(collection(db, "inspections"));
+  const snapshot = await getDocs(collection(db, "publicInspectionLogs"));
 
   const warningList = document.getElementById("warning-list");
   let flaggedCount = 0;

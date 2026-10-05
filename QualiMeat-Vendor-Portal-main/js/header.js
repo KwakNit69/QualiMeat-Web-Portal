@@ -1,38 +1,36 @@
 class GlobalHeader extends HTMLElement {
     connectedCallback() {
         const backUrl = this.getAttribute('back-url');
-        const backBtn = backUrl ? `<button class="back-btn" onclick="window.location.href='${backUrl}'">← Back</button>` : '';
+        const current = (window.location.pathname.split('/').pop() || 'index.html').toLowerCase();
+
+        const isVerify = current === 'index.html' || current === '' || current === 'details.html' || current === 'certificate.html';
+        const isWarnings = current === 'warnings.html';
+
+        const backBtn = backUrl
+            ? `<button class="qm-back" type="button" aria-label="Go back" onclick="window.location.href='${backUrl}'"><span class="material-symbols-outlined">arrow_back</span><span>Back</span></button>`
+            : '';
 
         this.innerHTML = `
-            <header class="app-bar" style="display: flex; justify-content: space-between; align-items: center; padding: 15px 40px; border-bottom: 1px solid var(--border); background: var(--app-bar-bg); backdrop-filter: blur(10px);">
-                <div class="brand" style="display: flex; align-items: center; gap: 15px;">
-                    ${backBtn}
-                    <div style="font-size: 1.5rem;">🥩</div>
-                    <div>
-                        <h2 style="margin:0; color: var(--primary); font-size: 1.4rem;">QualiMeat</h2>
-                        <small style="color: var(--muted);">Vendor Verification</small>
+            <header class="vendor-header">
+                <div class="vendor-header-inner">
+                    <div class="vendor-brand-wrap">
+                        ${backBtn}
+                        <a class="vendor-brand" href="index.html" aria-label="QualiMeat home">
+                            <img src="assets/qualimeat-logo.png" alt="QualiMeat logo">
+                            <div>
+                                <strong>QualiMeat</strong>
+                                <small>Safe Meat. Healthy People.</small>
+                            </div>
+                        </a>
                     </div>
+                    <nav class="vendor-nav" aria-label="Vendor portal navigation">
+                        <a href="index.html" class="${isVerify ? 'active' : ''}"><span class="material-symbols-outlined">verified_user</span>Verify</a>
+                        <a href="warnings.html" class="${isWarnings ? 'active' : ''}"><span class="material-symbols-outlined">warning</span>Warnings</a>
+                        <a href="../index.html"><span class="material-symbols-outlined">apps</span>Portals</a>
+                    </nav>
+                    <div class="vendor-live"><span class="dot"></span><span>Live records</span></div>
                 </div>
-                <div class="live-indicator" style="display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: 0.9rem;">
-                    <span class="dot" style="width: 10px; height: 10px; border-radius: 50%; background: var(--primary); box-shadow: 0 0 10px var(--primary);"></span>
-                    Live Firestore
-                    <button id="theme-toggle" class="theme-switch" style="background: rgba(128, 128, 128, 0.1); border: 1px solid var(--border); color: var(--text); cursor: pointer; padding: 6px 12px; border-radius: 8px; margin-left: 10px; transition: 0.2s;">🌙</button>
-                </div>
-            </header>
-        `;
-
-        const toggleBtn = this.querySelector('#theme-toggle');
-        const htmlElement = document.documentElement;
-
-        const currentTheme = htmlElement.getAttribute('data-theme');
-        toggleBtn.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
-
-        toggleBtn.addEventListener('click', () => {
-            const newTheme = htmlElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-            htmlElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            toggleBtn.textContent = newTheme === 'dark' ? '☀️' : '🌙';
-        });
+            </header>`;
     }
 }
 customElements.define('global-header', GlobalHeader);

@@ -1,7 +1,7 @@
 import { db } from "./firebase-config.js";
+import { findRegisteredStall, parseStallNumber, showStallErrorDialog } from "./stall-validation.js";
 import {
     collection,
-    getDocs,
     query,
     where,
     onSnapshot
@@ -13,31 +13,28 @@ async function loadDetails() {
         const qrData = decodeURIComponent(params.get("id") || "").trim();
 
         if (!qrData) {
-            document.getElementById("cert-grid").innerHTML = `<p class="empty-msg">Invalid QR data.</p>`;
+            showStallErrorDialog("", { onClose: () => window.location.replace("index.html") });
             return;
         }
 
-        let stallNumber = qrData;
-        if (qrData.includes(",")) stallNumber = qrData.split(",")[0].trim();
-        const labeledMatch = qrData.match(/stall\s*:\s*([^,]+)/i);
-        if (labeledMatch) stallNumber = labeledMatch[1].trim();
+        // 1. VERIFY THE STALL AGAIN ON THE DETAILS PAGE.
+        // This protects direct URL visits such as details.html?id=FAKE-STALL.
+        const registryResult = await findRegisteredStall(qrData);
+        const stallNumber = registryResult.stallNumber || parseStallNumber(qrData);
 
-        // 1. GET STALL PROFILE
-        const stallQuery = query(collection(db, "stalls"), where("stallNumber", "==", stallNumber));
-        const stallSnap = await getDocs(stallQuery);
-
-        if (stallSnap.empty) {
-            document.getElementById("cert-grid").innerHTML = `<p class="empty-msg">Vendor stall not found.</p>`;
+        if (!registryResult.found) {
+            document.getElementById("cert-grid").innerHTML = `<p class="empty-msg">This stall is not registered.</p>`;
+            showStallErrorDialog(stallNumber, { onClose: () => window.location.replace("index.html") });
             return;
         }
 
-        const stallData = stallSnap.docs[0].data();
+        const stallData = registryResult.data;
         document.getElementById("stall-name").textContent = stallData.vendorName || "Unknown Vendor";
         document.getElementById("stall-owner").textContent = `Stall ${stallData.stallNumber}`;
         document.getElementById("stall-img").src = stallData.stallImageUrl || "https://via.placeholder.com/120";
 
         // 2. GET INSPECTION LOGS (LIVE AGGREGATION & SORTED BY DATE)
-        const logsQuery = query(collection(db, "inspections"), where("stallNumber", "==", stallNumber));
+        const logsQuery = query(collection(db, "publicInspectionLogs"), where("stallNumber", "==", stallNumber));
 
         onSnapshot(logsQuery, (logsSnap) => {
             const certGrid = document.getElementById("cert-grid");
@@ -111,13 +108,9 @@ async function loadDetails() {
                     });
                 }
 
-                // Temporary Mock Evidence (if database doesn't have URLs yet)
-                if (sessionEvidence.length === 0) {
-                    sessionEvidence = [
-                        { cut: "Liempo", label: "SPOILED", imageUrl: "https://images.unsplash.com/photo-1602491453631-e2a56cb1d0f1?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80" },
-                        { cut: "Liempo", label: "FRESH", imageUrl: "https://images.unsplash.com/photo-1599921841143-819065a55cc6?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80" }
-                    ];
-                }
+                // Evidence is shown only when it exists in the inspection record.
+                // An empty modal communicates that no photo was captured instead of
+                // presenting illustrative images as official inspection evidence.
 
                 if (hasSpoiled) flaggedCount++;
 

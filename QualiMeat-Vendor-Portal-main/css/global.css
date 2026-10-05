@@ -1,14 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,300..700,0..1,0');
+
 :root {
-    /* MAIN THEME VARIABLES (Dark by default) */
-    --primary: #00E676;
-    --bg-gradient: radial-gradient(circle at top, #1c2128 0%, #0b0e11 100%);
-    --card-bg: rgba(22, 27, 34, 0.9);
-    --border: #30363d;
-    --text: #e6edf3;
-    --muted: #8b949e;
-    --title-color: #ffffff;
-    --input-bg: rgba(11, 14, 17, 0.5);
-    --input-border: #30363d;
+    --primary: #087A4B;
+    --primary-dark: #075A38;
+    --primary-light: #EAF7F0;
+    --secondary: #1769AA;
+    --accent: #D99A00;
+    --danger: #C83B3B;
+    --danger-light: #FDECEC;
+    --bg-gradient: #F7F9F8;
+    --app-bar-bg: #FFFFFF;
+    --card-bg: #FFFFFF;
+    --border: #E2E9E5;
+    --text: #17211C;
+    --muted: #66736C;
+    --title-color: #17211C;
+    --input-bg: #FFFFFF;
+    --input-border: #D8E3DD;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --shadow-sm: 0 1px 3px rgba(23,33,28,.05);
+    --shadow-md: 0 8px 24px rgba(23,33,28,.06);
 }
 
 global-header {
@@ -52,16 +64,16 @@ global-header {
 .skel-stat { width: 50px; height: 40px; border-radius: 8px; margin: 0 auto; }
 .skel-card { width: 100%; height: 130px; border-radius: 18px; }
 
-[data-theme="light"] {
+[data-theme="light"], [data-theme="dark"] {
     /* LIGHT MODE (Only affects the main layout now) */
-    --bg-gradient: radial-gradient(circle at top, #f0f2f5 0%, #ffffff 100%);
-    --card-bg: rgba(255, 255, 255, 0.9);
+    --bg-gradient: #F7F9F8;
+    --card-bg: #ffffff;
     --border: #d0d7de;
     --text: #1f2328;
     --muted: #656d76;
     --title-color: #1f2328;
     --input-bg: #ffffff;
-    --input-border: #d0d7de;
+    --input-border: #D8E3DD;
 }
 
 body {
@@ -143,3 +155,29 @@ body {
     background: var(--primary); 
     box-shadow: 0 0 10px var(--primary); 
 }
+
+/* Shared Vendor design system */
+body { background:var(--bg-gradient) !important; color:var(--text) !important; line-height:1.5; }
+.app-bar { background:#fff !important; border-color:var(--border) !important; padding:14px clamp(16px,4vw,48px) !important; box-shadow:var(--shadow-sm); backdrop-filter:none !important; }
+.brand h2 { color:var(--primary) !important; letter-spacing:-.03em; }
+.brand small, .live-indicator { color:var(--muted) !important; }
+.theme-switch { display:none !important; }
+.back-btn { background:var(--primary-light) !important; color:var(--primary-dark) !important; border:1px solid #cce9da !important; border-radius:8px !important; }
+.info-card, .status-card, .scanner-card, .vendor-summary-card, .log-card, .certificate-paper, .summary-card, .warning-card { background:#fff !important; border:1px solid var(--border) !important; border-radius:12px !important; box-shadow:var(--shadow-sm) !important; backdrop-filter:none !important; }
+.scanner-layout { max-width:1320px !important; gap:20px !important; padding:32px clamp(16px,4vw,48px) !important; }
+.scanner-card h1, #stall-name, .logs-section h3, .modal-header h2 { color:var(--text) !important; }
+.scanner-frame { min-height:360px !important; border:1px solid var(--border) !important; border-radius:12px !important; }
+.upload-btn { background:var(--primary) !important; color:#fff !important; border-radius:8px !important; }
+.secondary-btn { color:var(--primary-dark) !important; border-color:#bdd8c9 !important; border-radius:8px !important; }
+.status-item strong { color:var(--primary-dark); }
+.vendor-summary-card, .log-card, .stat-box { border-color:var(--border) !important; }
+.stat-box { background:#F8FBF9 !important; border-radius:8px !important; }
+.stat-box span { color:var(--primary) !important; }
+.stat-box.flagged span { color:var(--danger) !important; }
+.warning-box.safe { background:var(--primary-light) !important; border-color:#cce9da !important; color:var(--primary-dark) !important; }
+.warning-box.danger { background:var(--danger-light) !important; border-color:#f2c5c5 !important; color:var(--danger) !important; }
+.badge.fresh { background:var(--primary-light) !important; color:var(--primary-dark) !important; }
+.badge.spoiled { background:var(--danger-light) !important; color:var(--danger) !important; }
+.modal-overlay { background:rgba(23,33,28,.45) !important; }
+.modal-content { color:var(--text) !important; }
+@media(max-width:650px) { .app-bar { padding:12px 16px !important; } .live-indicator { display:none !important; } .vendor-left { align-items:flex-start; } .summary-stats { width:100%; } .stat-box { flex:1; } }
