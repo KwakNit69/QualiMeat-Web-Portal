@@ -1,0 +1,28 @@
+<nav class="sidebar">
+  <div class="brand">
+    <div class="logo-text">
+      QualiMeat
+      <span>PRECISION INSPECTION</span>
+    </div>
+  </div>
+
+  <ul class="nav-menu">
+    <li *ngFor="let item of navItems" 
+        [routerLink]="item.path" 
+        routerLinkActive="active" 
+        class="nav-item">
+      <span>{{ item.icon }}</span> {{ item.label }}
+    </li>
+  </ul>
+
+  <div class="sidebar-footer">
+    <button class="btn-new" routerLink="/portal/new-inspection">
+      + NEW INSPECTION
+    </button>
+
+    <div class="footer-links">
+      <span>❓ SUPPORT</span>
+      <span class="sign-out" (click)="logout()">🚪 SIGN OUT</span>
+    </div>
+  </div>
+</nav>

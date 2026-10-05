@@ -1,0 +1,13 @@
+QualiMeat Vendor Portal — Premium Redesign
+
+Updated pages:
+- Vendor verification / QR scanner
+- Stall details and inspection logs
+- Warning Center
+- Certificate display
+- Shared vendor header/navigation
+
+Important:
+- Firebase, QR scanner, stall validation, Firestore collection names, and existing element IDs were preserved.
+- premium.css is loaded last and provides the visual upgrade layer.
+- The certificate keeps its print-specific rules.

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>QualiMeat Secure Access</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
+    <link rel="stylesheet" href="loginpage.css">
+
+</head>
+
+<body>
+
+
+
+    <main class="content-wrapper">
+
+        <div class="login-container">
+
+            <header class="hero-header">
+
+                <div class="icon-circle">
+
+                    <span class="material-symbols-outlined icon-fill">verified_user</span>
+
+                </div>
+
+                <h1>QualiMeat Secure Access</h1>
+
+                <p class="subtitle">Inspection & Quality Control Portal</p>
+
+            </header>
+
+
+
+            <div class="login-card">
+
+                <div class="accent-blob"></div>
+
+               
+
+                <form class="login-form">
+
+                    <div class="input-group">
+
+                        <label>Corporate Email</label>
+
+                        <div class="input-wrapper">
+
+                            <span class="material-symbols-outlined">alternate_email</span>
+
+                            <input type="email" placeholder="name@emeraldprecision.com" required>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="input-group">
+
+                        <div class="label-row">
+
+                            <label>Security Key</label>
+
+                            <a href="#" class="forgot-link">Forgot Password?</a>
+
+                        </div>
+
+                        <div class="input-wrapper">
+
+                            <span class="material-symbols-outlined">lock_open</span>
+
+                            <input type="password" placeholder="••••••••••••" required>
+
+                        </div>
+
+                    </div>
+
+
+
+<form class="login-form" (ngSubmit)="onLogin()">
+
+    <button type="submit" class="btn-submit">
+        <span>Sign In</span>
+        <span class="material-symbols-outlined">arrow_forward</span>
+    </button>
+
+</form>
+
+
+
+                    <div class="signup-prompt">
+
+                        <p>New to the inspection fleet? <a routerLink="/register">Create an Account</a></p>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+
+
+            <div class="compliance-footer">
+
+                <p class="compliance-text">
+
+                    Authorized use only. This portal is monitored by Emerald Precision Security Operations.
+
+                    Your IP and access patterns are recorded for regulatory compliance.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+
+</body>
+
+</html>

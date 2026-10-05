@@ -1,0 +1,211 @@
+:root {
+    --primary: #22c55e;
+    --primary-dark: #16a34a;
+    --primary-light: #dcfce7;
+    --background: #f8faf8;
+    --text-dark: #0f172a;
+    --text-muted: #64748b;
+    --white: #ffffff;
+    --outline: #e2e8f0;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(180deg, #f9fbf9 0%, #f3f7f4 100%);
+    color: var(--text-dark);
+    min-height: 100vh;
+}
+
+/* Main Layout */
+.content-wrapper {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem 1rem;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 460px;
+}
+
+/* Header */
+.hero-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.icon-circle {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: var(--primary-light);
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--primary-dark);
+    box-shadow: 0 10px 30px rgba(34, 197, 94, 0.18);
+    margin-bottom: 1rem;
+}
+
+.hero-header h1 {
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.4rem;
+}
+
+.subtitle {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--text-muted);
+}
+
+/* Login Card */
+.login-card {
+    position: relative;
+    background: var(--white);
+    border-radius: 28px;
+    padding: 2rem;
+    box-shadow:
+        0 20px 50px rgba(15, 23, 42, 0.08),
+        0 4px 10px rgba(15, 23, 42, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    overflow: hidden;
+}
+
+.accent-blob {
+    position: absolute;
+    width: 90px;
+    height: 90px;
+    background: rgba(34, 197, 94, 0.08);
+    border-radius: 50%;
+    top: -20px;
+    right: -20px;
+}
+
+/* Form */
+.input-group {
+    margin-bottom: 1.4rem;
+}
+
+.input-group label {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.55rem;
+    color: var(--text-dark);
+}
+
+.label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.forgot-link {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--primary-dark);
+    text-decoration: none;
+}
+
+.input-wrapper {
+    position: relative;
+}
+
+.input-wrapper .material-symbols-outlined {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #94a3b8;
+    font-size: 20px;
+}
+
+.input-wrapper input {
+    width: 100%;
+    padding: 1rem 1rem 1rem 3rem;
+    border-radius: 16px;
+    border: 1px solid var(--outline);
+    background: #f8fafc;
+    font-size: 0.95rem;
+    outline: none;
+    transition: all 0.25s ease;
+}
+
+.input-wrapper input:focus {
+    border-color: var(--primary);
+    background: #ffffff;
+    box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.12);
+}
+
+/* Better Button */
+.btn-submit {
+    width: 100%;
+    border: none;
+    border-radius: 18px;
+    padding: 1rem;
+    margin-top: 0.5rem;
+    background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+    color: #ffffff !important;
+    font-size: 1rem;
+    font-weight: 800;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.6rem;
+    cursor: pointer;
+    box-shadow: 0 12px 24px rgba(34, 197, 94, 0.25);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    opacity: 1 !important;
+}
+
+.btn-submit span {
+    color: #ffffff !important;
+    opacity: 1 !important;
+}
+
+.btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 28px rgba(34, 197, 94, 0.32);
+}
+
+/* Signup */
+.signup-prompt {
+    margin-top: 1.5rem;
+    text-align: center;
+}
+
+.signup-prompt p {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.signup-prompt a {
+    color: var(--text-dark);
+    font-weight: 800;
+    text-decoration: none;
+}
+
+/* Footer */
+.compliance-text {
+    margin-top: 2rem;
+    font-size: 11px;
+    line-height: 1.6;
+    color: #94a3b8;
+    text-align: center;
+    max-width: 360px;
+    margin-inline: auto;
+}

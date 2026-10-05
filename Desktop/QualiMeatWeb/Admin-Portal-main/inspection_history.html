@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <script>
+    if (sessionStorage.getItem("qualimeat_logged_out") === "1") {
+      document.documentElement.style.visibility = "hidden";
+      window.location.replace("index.html");
+    }
+  </script>
+
+  <title>Inspection History - QualiMeat</title>
+
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/sidebar.css">
+  <link rel="stylesheet" href="css/inspection_history.css">
+  <link rel="stylesheet" href="css/redesign.css">
+  <link rel="stylesheet" href="css/mockup-theme.css">
+  <link rel="stylesheet" href="css/mockup-v2.css">
+
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+</head>
+<body>
+
+  <div class="dashboard-layout">
+
+    <aside id="sidebar-container" class="sidebar" aria-label="Admin navigation">
+      <div class="logo">
+        <img src="assets/qualimeat-logo.png" alt="QualiMeat logo">
+        <span>QualiMeat</span>
+        <small>SAFE MEAT. HEALTHY PEOPLE.</small>
+      </div>
+
+      <nav class="menu">
+        <a href="dashboard.html"><span class="material-symbols-outlined">dashboard</span>Dashboard</a>
+        <a href="inspections.html"><span class="material-symbols-outlined">fact_check</span>Inspections</a>
+        <a href="inspection_history.html"><span class="material-symbols-outlined">history</span>Inspection history</a>
+        <a href="information.html"><span class="material-symbols-outlined">storefront</span>Registry</a>
+        <a href="compliance.html"><span class="material-symbols-outlined">verified_user</span>Compliance</a>
+        <a href="reports.html"><span class="material-symbols-outlined">analytics</span>Reports</a>
+        <a href="profile.html"><span class="material-symbols-outlined">account_circle</span>Profile</a>
+      </nav>
+
+      <button id="logoutBtn" class="logout-btn" type="button"><span class="material-symbols-outlined">logout</span>Log out</button>
+    </aside>
+
+    <main class="main-content">
+      
+      <header class="page-header">
+        <div>
+          <small>DRILL-DOWN</small>
+          <h1>Inspection History</h1>
+        </div>
+
+        <div class="top-actions">
+        <button id="backBtn" class="back-btn hidden" onclick="goBack()">
+          ← BACK TO STALLS
+        </button>
+        </div>
+      </header>
+
+      <div id="view1-stalls" class="view-section">
+        <div class="search-bar">
+          <input type="text" id="searchInput" placeholder="Search by Stall or Vendor...">
+        </div>
+        <div id="stallGrid" class="stall-grid">
+          </div>
+      </div>
+
+      <div id="view2-history" class="view-section hidden">
+        <div class="stall-profile-header" id="selectedStallHeader">
+          </div>
+        <div class="history-list" id="stallHistoryList">
+          </div>
+      </div>
+
+      <div id="view3-details" class="view-section hidden">
+        <div class="detail-card" id="inspectionDetailCard">
+          </div>
+      </div>
+
+    </main>
+  </div>
+
+  <script type="module" src="js/sidebar.js"></script>
+  <script type="module" src="js/inspection_history.js"></script>
+  <script src="js/navigation.js" defer></script>
+</body>
+</html>

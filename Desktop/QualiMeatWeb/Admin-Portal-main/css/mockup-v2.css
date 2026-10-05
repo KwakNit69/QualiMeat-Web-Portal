@@ -1,0 +1,124 @@
+/* QualiMeat Mockup V2 — layout/proportion correction */
+:root{
+  --qm-deep:#064e2e; --qm-deeper:#043d25; --qm-green:#0a8f45; --qm-green-hi:#17a754;
+  --qm-mint:#edf8f1; --qm-bg:#f5faf7; --qm-line:#dfe9e3; --qm-text:#17211b; --qm-muted:#67766d;
+  --qm-radius:16px;
+}
+html,body{min-height:100%;}
+body{background:#f4faf6!important;}
+.main-content{
+  padding:24px 30px 38px!important;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+/* wide page heads */
+.page-header,.registry-heading,.topbar{
+  width:100%!important;
+}
+.page-header{
+  display:flex!important;
+  align-items:flex-end!important;
+  justify-content:space-between!important;
+  gap:24px!important;
+  min-height:92px!important;
+  padding:4px 2px 18px!important;
+  border-bottom:1px solid rgba(6,78,46,.08)!important;
+}
+.page-header>div:first-child{min-width:0;}
+.page-header h1{font-size:2.35rem!important;line-height:1.05!important;margin:.25rem 0 0!important;}
+.page-header small,.page-label{color:#157044!important;font-size:.72rem!important;letter-spacing:.11em!important;text-transform:uppercase;font-weight:800!important;}
+.page-header input[type="text"],.page-header input[type="search"]{
+  width:min(410px,32vw)!important;height:46px!important;border:1px solid #d6e2db!important;border-radius:12px!important;
+  background:#fff!important;box-shadow:0 4px 14px rgba(6,78,46,.035)!important;padding:0 16px!important;
+}
+/* inspection/history/report/compliance table cards should use the workspace */
+.main-content > .table-card:not(.registry-card){
+  width:100%!important;max-width:none!important;display:block!important;margin:18px 0 0!important;
+  border-radius:16px!important;padding:16px!important;box-shadow:0 8px 28px rgba(16,70,45,.055)!important;
+}
+.main-content > .table-card:not(.registry-card) table{width:100%!important;table-layout:auto!important;}
+.main-content > .table-card:not(.registry-card) thead th{height:42px!important;white-space:nowrap!important;}
+.main-content > .table-card:not(.registry-card) tbody td{height:52px!important;vertical-align:middle!important;}
+#inspectionTableBody td:last-child button,.view-btn{min-width:72px!important;}
+/* Registry */
+.registry-heading{
+  padding:22px 24px!important;min-height:128px!important;align-items:center!important;
+  background:linear-gradient(105deg,#f8fcfa 0%,#edf8f1 100%)!important;
+}
+.registry-heading h1{font-size:2.25rem!important;margin:0 0 5px!important;}
+.registry-heading p{margin:0!important;color:#65766d!important;}
+.registry-filter-wrap{width:min(500px,42vw)!important;min-width:360px!important;}
+.registry-filter-wrap label{display:block;margin-bottom:7px!important;font-size:.72rem!important;letter-spacing:.08em;text-transform:uppercase;}
+.registry-search{height:46px!important;display:flex!important;align-items:center!important;padding:0 13px!important;gap:8px!important;}
+.registry-search input{width:100%!important;height:42px!important;background:transparent!important;}
+.registry-grid{
+  display:grid!important;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr)!important;gap:18px!important;align-items:start!important;margin-top:18px!important;
+}
+.registry-grid .registry-card{
+  width:100%!important;margin:0!important;display:block!important;padding:18px 18px 14px!important;min-width:0!important;
+  border-radius:16px!important;box-shadow:0 8px 28px rgba(16,70,45,.055)!important;
+}
+.registry-grid .registry-card h2{font-size:1.35rem!important;margin:0 0 14px!important;}
+.registry-grid .registry-card table{width:100%!important;table-layout:auto!important;}
+.registry-grid .registry-card tbody td{height:52px!important;vertical-align:middle!important;}
+.registry-grid .registry-card .table-pagination{min-height:47px!important;}
+/* Sidebar stronger proportions */
+.sidebar{position:fixed!important;inset:0 auto 0 0!important;height:100vh!important;z-index:40!important;}
+.sidebar .logo{min-height:184px!important;flex-direction:column!important;}
+.sidebar .logo img{width:78px!important;height:78px!important;}
+.sidebar .menu{flex:1!important;}
+.logout-btn{margin-top:auto!important;min-height:46px!important;border-radius:10px!important;}
+/* Auth — match mockup proportions */
+body:has(.auth-wrapper){overflow:hidden!important;background:#f6faf8!important;}
+.auth-wrapper{
+  min-height:100vh!important;height:100vh!important;grid-template-columns:minmax(520px,1.03fr) minmax(520px,.97fr)!important;
+}
+.auth-header{
+  padding:clamp(60px,8vw,130px)!important;
+  justify-content:center!important;
+  background:
+    linear-gradient(145deg,rgba(2,74,39,.92),rgba(3,57,34,.96)),
+    radial-gradient(circle at 30% 30%,rgba(36,190,95,.26),transparent 38%)!important;
+}
+.auth-header .icon-circle{width:142px!important;height:142px!important;margin-bottom:25px!important;}
+.auth-header h1{font-size:clamp(3.1rem,4.3vw,4.8rem)!important;line-height:.95!important;margin:0 0 13px!important;}
+.auth-header p{font-size:.82rem!important;margin:0 0 32px!important;}
+.auth-intro{max-width:570px;font-size:1.35rem;line-height:1.45;color:#fff;margin:0 0 30px;font-weight:500;}
+.auth-feature-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px 28px;max-width:570px;position:relative;z-index:1;}
+.auth-feature{display:flex;align-items:center;gap:12px;color:#f1fff5;font-size:.96rem;font-weight:650;}
+.auth-feature .material-symbols-outlined{width:42px;height:42px;display:grid;place-items:center;border:1px solid rgba(170,255,201,.34);border-radius:11px;background:rgba(19,156,76,.18);}
+.auth-panel{position:relative;display:flex;align-items:center;justify-content:center;padding:54px 7vw;background:radial-gradient(circle at 70% 14%,#effaf3 0,transparent 37%),#f8fbf9;}
+.auth-panel::before{content:"";position:absolute;right:-100px;top:-110px;width:520px;height:520px;background:url('../assets/qualimeat-logo.png') center/contain no-repeat;opacity:.045;pointer-events:none;}
+.auth-card{
+  align-self:auto!important;justify-self:auto!important;width:min(540px,100%)!important;padding:42px 44px!important;border:1px solid #e1ebe5!important;
+  box-shadow:0 22px 60px rgba(6,78,46,.12)!important;position:relative;z-index:1;
+}
+.auth-card::before{content:""!important;display:none!important;}
+.auth-brand{display:flex;align-items:center;gap:14px;margin-bottom:26px;}
+.auth-brand img{width:64px;height:64px;object-fit:contain;}
+.auth-brand-title{font-size:1.65rem;font-weight:850;color:#073f28;line-height:1;}
+.auth-brand-tag{font-size:.64rem;letter-spacing:.13em;color:#168349;font-weight:800;margin-top:6px;}
+.auth-card h2{font-size:2rem;line-height:1.12;margin:0 0 8px;color:#14201a;}
+.auth-subtitle{margin:0 0 28px;color:#6b7770;line-height:1.5;}
+.auth-card label{display:block!important;margin:0 0 7px!important;font-size:.72rem!important;letter-spacing:.08em!important;color:#35443b!important;font-weight:800!important;}
+.auth-card input{width:100%!important;height:50px!important;margin-bottom:18px!important;background:#fbfdfc!important;border:1px solid #d9e4de!important;}
+.password-row{margin-top:0!important;}
+.password-row label{margin-bottom:0!important;}
+.password-row a{font-size:.83rem!important;}
+.auth-card button{width:100%!important;margin-top:4px!important;font-weight:750!important;}
+.google-btn{margin-top:12px!important;}
+.signup-text{border-top:1px solid #e7eee9;padding-top:18px!important;text-align:center!important;}
+.auth-security{margin-top:20px;border-radius:12px;background:#eef8f2;border:1px solid #dceee3;padding:14px 16px;display:flex;gap:12px;align-items:flex-start;color:#42604e;font-size:.82rem;line-height:1.45;}
+.auth-security .material-symbols-outlined{color:#0b8b45;}
+.compliance{display:none!important;}
+/* responsive */
+@media(max-width:1180px){
+  .registry-grid{grid-template-columns:1fr!important;}
+  .registry-filter-wrap{width:100%!important;min-width:0!important;}
+}
+@media(max-width:1050px){
+  body:has(.auth-wrapper){overflow:auto!important}.auth-wrapper{height:auto!important;min-height:100vh!important;grid-template-columns:1fr!important}.auth-header{display:none!important}.auth-panel{min-height:100vh!important;padding:32px 20px!important}
+}
+@media(max-width:760px){
+  .page-header{align-items:stretch!important;flex-direction:column!important}.page-header input[type="text"],.page-header input[type="search"]{width:100%!important}.registry-heading{align-items:stretch!important}.registry-filter-wrap{width:100%!important}.auth-card{padding:30px 24px!important}.auth-card h2{font-size:1.7rem!important}
+}

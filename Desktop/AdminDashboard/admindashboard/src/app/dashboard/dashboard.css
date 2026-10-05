@@ -1,0 +1,59 @@
+.main-content {
+  flex-grow: 1;
+  height: 100vh;
+  overflow-y: auto;
+  padding: 40px;
+  box-sizing: border-box;
+  background-color: var(--bg);
+}
+
+.top-nav {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  margin-bottom: 30px;
+}
+
+.overview-header h1 { font-size: 28px; margin: 0; }
+.overview-header p { color: var(--text-dim); margin: 5px 0 30px; }
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr;
+  gap: 25px;
+  margin-bottom: 40px;
+}
+
+.card {
+  background: white;
+  border-radius: 20px;
+  padding: 25px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+}
+
+.stat-value { font-size: 42px; font-weight: 800; margin: 15px 0 5px; }
+.stat-value.small { font-size: 32px; }
+
+.batch-card {
+  background: white;
+  padding: 20px;
+  border-radius: 16px;
+  margin-bottom: 15px;
+  display: flex;
+  gap: 20px;
+  border-left: 5px solid var(--primary);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.02);
+}
+
+.batch-card.flagged { border-left-color: #FF5252; }
+
+.dark-card { background: #0B111D; color: white; }
+
+.content-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 30px;
+}
+
+.badge.success { background: #E8FAF0; color: #00E676; }
+.badge.danger { background: #FFEEEE; color: #FF5252; }
