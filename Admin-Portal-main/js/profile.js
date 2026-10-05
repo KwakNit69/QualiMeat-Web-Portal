@@ -1,3 +1,6 @@
+import { requireAdminSession } from "./auth-guard.js";
+await requireAdminSession();
+
 import { db } from "./firebase-config.js";
 import { collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 // 🔥 Add Firebase Auth import
@@ -121,4 +124,8 @@ window.saveProfile = function() {
     }, 800);
 };
 
-document.addEventListener("DOMContentLoaded", loadProfile);
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", loadProfile, { once: true });
+} else {
+    loadProfile();
+}

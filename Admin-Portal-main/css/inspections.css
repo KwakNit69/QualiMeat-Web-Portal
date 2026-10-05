@@ -130,3 +130,9 @@ tbody tr:hover {
   border: 1px solid #eee;
 }
 .skeleton-row td { padding: 12px; }
+
+/* Page refinement: inspection records and expandable findings */
+.table-card { padding:20px; }
+.view-btn { min-width:64px; }
+.details-row td { background:#F8FBF9; white-space:normal; }
+.scan-history { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:10px; }

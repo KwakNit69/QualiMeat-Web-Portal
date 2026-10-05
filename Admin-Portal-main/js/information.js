@@ -1,277 +1,138 @@
+import { requireAdminSession } from "./auth-guard.js";
+await requireAdminSession();
+
 import { db } from "./firebase-config.js";
-import {
-  collection,
-  getDocs,
-  deleteDoc,
-  doc
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { collection, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getPage, renderPagination, DEFAULT_PAGE_SIZE } from "./table-pagination.js";
 
 let inspections = [];
+let inspectors = [];
+let stalls = [];
+let filterText = "";
+let inspectorPage = 1;
+let stallPage = 1;
 
 async function loadPage() {
     try {
-        // --- 1. INJECT SKELETONS BEFORE LOADING ---
         const inspectorBody = document.getElementById("inspectorTableBody");
-        if (inspectorBody) {
-            inspectorBody.innerHTML = Array(3).fill(`
-                <tr class="skeleton-row">
-                    <td><div class="skeleton sk-text" style="width: 60%;"></div></td>
-                    <td><div class="skeleton sk-text" style="width: 40%;"></div></td>
-                </tr>
-            `).join("");
-        }
-
+        if (inspectorBody) inspectorBody.innerHTML = Array(3).fill(`<tr class="skeleton-row"><td><div class="skeleton sk-text" style="width:60%;"></div></td><td><div class="skeleton sk-text" style="width:40%;"></div></td></tr>`).join("");
         const stallBody = document.getElementById("stallTableBody");
-        if (stallBody) {
-            stallBody.innerHTML = Array(4).fill(`
-                <tr class="skeleton-row">
-                    <td><div class="skeleton sk-text" style="width: 30%;"></div></td>
-                    <td><div class="skeleton sk-text" style="width: 70%;"></div></td>
-                    <td><div class="skeleton sk-badge"></div></td>
-                </tr>
-            `).join("");
-        }
-        // ------------------------------------------
+        if (stallBody) stallBody.innerHTML = Array(4).fill(`<tr class="skeleton-row"><td><div class="skeleton sk-text" style="width:30%;"></div></td><td><div class="skeleton sk-text" style="width:70%;"></div></td><td><div class="skeleton sk-badge"></div></td></tr>`).join("");
 
-        // 2. FETCH FIREBASE DATA
-        const userSnap = await getDocs(collection(db, "users"));
-        const stallSnap = await getDocs(collection(db, "stalls"));
-        const inspectSnap = await getDocs(collection(db, "inspections"));
+        const [userSnap, stallSnap, inspectSnap] = await Promise.all([
+            getDocs(collection(db, "users")),
+            getDocs(collection(db, "stalls")),
+            getDocs(collection(db, "inspections"))
+        ]);
 
-        inspections = inspectSnap.docs.map(d => ({
-            id: d.id,
-            ...d.data()
-        }));
+        inspections = inspectSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+        inspectors = userSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+        stalls = stallSnap.docs.map(d => ({ id: d.id, ...d.data() }));
 
-        // 3. RENDER REAL DATA
-        renderInspectors(userSnap);
-        renderStalls(stallSnap);
-
+        renderRegistry();
     } catch (error) {
         console.error("Error loading page data:", error);
     }
 }
 
-function renderInspectors(snapshot) {
+function matches(value, query) {
+    return String(value ?? "").toLowerCase().includes(query);
+}
+
+function renderRegistry() {
+    const q = filterText.trim().toLowerCase();
+    const filteredInspectors = inspectors
+        .filter(item => !q || matches(item.fullName, q) || matches(item.jobTitle, q) || matches(item.email, q))
+        .sort((a, b) => String(a.fullName || "").localeCompare(String(b.fullName || "")));
+    const filteredStalls = stalls
+        .filter(item => !q || matches(item.stallNumber, q) || matches(item.vendorName, q))
+        .sort((a, b) => String(a.stallNumber || "").localeCompare(String(b.stallNumber || ""), undefined, { numeric: true }));
+
+    renderInspectors(filteredInspectors);
+    renderStalls(filteredStalls);
+
+    const count = document.getElementById("registryFilterCount");
+    if (count) {
+        count.textContent = q
+            ? `${filteredInspectors.length} inspector${filteredInspectors.length === 1 ? "" : "s"} • ${filteredStalls.length} stall${filteredStalls.length === 1 ? "" : "s"}`
+            : `${inspectors.length} inspectors • ${stalls.length} stalls`;
+    }
+}
+
+function renderInspectors(rows) {
     const tbody = document.getElementById("inspectorTableBody");
     if (!tbody) return;
-
-    tbody.innerHTML = snapshot.docs.map(docSnap => {
-        const data = docSnap.data();
-
-        return `
-            <tr>
-                <td>
-                    <span class="clickable" onclick="showInspector('${data.fullName}')">
-                        ${data.fullName}
-                    </span>
-                </td>
-                <td>${data.jobTitle}</td>
-            </tr>
-        `;
-    }).join("");
+    const page = getPage(rows, inspectorPage, DEFAULT_PAGE_SIZE);
+    inspectorPage = page.currentPage;
+    tbody.innerHTML = page.pageItems.length ? page.pageItems.map(data => {
+        const encodedName = encodeURIComponent(data.fullName || "Unknown");
+        return `<tr><td><button type="button" class="table-link" onclick="showInspector(decodeURIComponent('${encodedName}'))">${data.fullName || "Unknown"}</button></td><td>${data.jobTitle || data.role || "-"}</td></tr>`;
+    }).join("") : `<tr><td colspan="2" class="empty-table">No inspectors match this filter.</td></tr>`;
+    renderPagination("inspectorPagination", page, next => { inspectorPage = next; renderInspectors(rows); }, "inspectors");
 }
 
-function renderStalls(snapshot) {
+function renderStalls(rows) {
     const tbody = document.getElementById("stallTableBody");
     if (!tbody) return;
-
-    tbody.innerHTML = snapshot.docs.map(docSnap => {
-        const data = docSnap.data();
-
-        // 🔥 SAME FORMAT AS YOUR FLUTTER QR
-        const qrData = `${data.stallNumber},${data.vendorName}`;
-
-        return `
-            <tr>
-                <td>
-                    <span class="clickable" onclick="showStall('${data.stallNumber}')">
-                        ${data.stallNumber}
-                    </span>
-                </td>
-
-                <td>${data.vendorName}</td>
-
-                <td>
-                    <button class="qr-btn" onclick="showQR('${qrData}')">
-                        View QR
-                    </button>
-                </td>
-            </tr>
-        `;
-    }).join("");
+    const page = getPage(rows, stallPage, DEFAULT_PAGE_SIZE);
+    stallPage = page.currentPage;
+    tbody.innerHTML = page.pageItems.length ? page.pageItems.map(data => {
+        const stallNumber = String(data.stallNumber ?? "-");
+        const qrData = `${stallNumber},${data.vendorName || "Unknown"}`;
+        return `<tr>
+            <td><button type="button" class="table-link" onclick="showStall(decodeURIComponent('${encodeURIComponent(stallNumber)}'))">${stallNumber}</button></td>
+            <td>${data.vendorName || "Unknown"}</td>
+            <td><button class="qr-btn" onclick="showQR(decodeURIComponent('${encodeURIComponent(qrData)}'))">View QR</button></td>
+        </tr>`;
+    }).join("") : `<tr><td colspan="3" class="empty-table">No stalls match this filter.</td></tr>`;
+    renderPagination("stallPagination", page, next => { stallPage = next; renderStalls(rows); }, "stalls");
 }
 
-/* =========================
-   MODAL HELPERS
-========================= */
 window.openModal = function(content) {
     const modalContent = document.getElementById("modalContent");
     const modalOverlay = document.getElementById("modalOverlay");
-    
-    if (modalContent && modalOverlay) {
-        modalContent.innerHTML = content;
-        modalOverlay.classList.remove("hidden");
-    }
+    if (modalContent && modalOverlay) { modalContent.innerHTML = content; modalOverlay.classList.remove("hidden"); }
 };
+window.closeModal = function() { document.getElementById("modalOverlay")?.classList.add("hidden"); };
 
-window.closeModal = function() {
-    const modalOverlay = document.getElementById("modalOverlay");
-    if (modalOverlay) {
-        modalOverlay.classList.add("hidden");
-    }
-};
-
-/* =========================
-   INSPECTOR POPUP
-========================= */
 window.showInspector = function(name) {
-    const sessions = inspections.filter(
-        i => i.inspectorName === name
-    );
-
+    const sessions = inspections.filter(i => i.inspectorName === name);
     openModal(`
-        <div class="profile-header">
-            <img src="https://via.placeholder.com/90">
-            <div>
-                <h2>${name}</h2>
-                <p>Total Sessions: ${sessions.length}</p>
-            </div>
-        </div>
-
+        <div class="profile-header"><div class="profile-avatar-fallback">${(name || "?").charAt(0).toUpperCase()}</div><div><h2>${name}</h2><p>Total Sessions: ${sessions.length}</p></div></div>
         <h3>Inspection Sessions</h3>
-
-        ${sessions.map(s => `
-            <div class="session-item">
-                <strong>${s.vendorName}</strong><br>
-                Stall: ${s.stallNumber}<br>
-                Date: ${
-                    s.timestamp?.toDate
-                        ? s.timestamp.toDate().toLocaleDateString()
-                        : "-"
-                }
-                <br>
-                <button class="delete-btn" onclick="deleteOne('${s.id}')">
-                    Delete
-                </button>
-            </div>
-        `).join("")}
-
-        <button class="delete-btn" onclick="deleteAllInspector('${name}')">
-            Delete All Sessions
-        </button>
-
-        <button class="close-btn" onclick="closeModal()">
-            Close
-        </button>
-    `);
+        <div class="modal-session-list">${sessions.length ? sessions.map(s => `<div class="session-item"><strong>${s.vendorName || "Unknown"}</strong><br>Stall: ${s.stallNumber ?? "-"}<br>Date: ${s.timestamp?.toDate ? s.timestamp.toDate().toLocaleDateString() : "-"}<br><button class="delete-btn" onclick="deleteOne('${s.id}')">Delete</button></div>`).join("") : '<div class="empty-state-compact">No inspection sessions.</div>'}</div>
+        <div class="modal-actions"><button class="delete-btn" onclick="deleteAllInspector(decodeURIComponent('${encodeURIComponent(name)}'))">Delete All Sessions</button><button class="close-btn" onclick="closeModal()">Close</button></div>`);
 };
 
-/* =========================
-   STALL POPUP
-========================= */
 window.showStall = async function(stallNumber) {
-    const stallSnapshot = await getDocs(collection(db, "stalls"));
-    let stallData = null;
-
-    stallSnapshot.forEach(docSnap => {
-        const data = docSnap.data();
-        if (String(data.stallNumber) === String(stallNumber)) {
-            stallData = data;
-        }
-    });
-
-    const sessions = inspections.filter(
-        i => String(i.stallNumber) === String(stallNumber)
-    );
-
+    const stallData = stalls.find(s => String(s.stallNumber) === String(stallNumber));
+    const sessions = inspections.filter(i => String(i.stallNumber) === String(stallNumber));
     openModal(`
-        <div class="profile-header">
-            <img src="${
-                stallData?.stallImageUrl ||
-                "https://via.placeholder.com/90"
-            }">
-            <div>
-                <h2>Stall ${stallNumber}</h2>
-                <p>Vendor: ${stallData?.vendorName || "Unknown"}</p>
-                <p>Total Sessions: ${sessions.length}</p>
-            </div>
-        </div>
-
+        <div class="profile-header"><img src="${stallData?.stallImageUrl || "https://via.placeholder.com/90"}" alt="Stall ${stallNumber}"><div><h2>Stall ${stallNumber}</h2><p>Vendor: ${stallData?.vendorName || "Unknown"}</p><p>Total Sessions: ${sessions.length}</p></div></div>
         <h3>Inspection Sessions</h3>
-
-        ${sessions.map(s => `
-            <div class="session-item">
-                <strong>${s.vendorName}</strong><br>
-                Inspector: ${s.inspectorName}<br>
-                Date: ${
-                    s.timestamp?.toDate
-                        ? s.timestamp.toDate().toLocaleDateString()
-                        : "-"
-                }
-                <br>
-                <button class="delete-btn" onclick="deleteOne('${s.id}')">
-                    Delete
-                </button>
-            </div>
-        `).join("")}
-
-        <button class="delete-btn" onclick="deleteAllStall('${stallNumber}')">
-            Delete All Sessions
-        </button>
-
-        <button class="close-btn" onclick="closeModal()">
-            Close
-        </button>
-    `);
+        <div class="modal-session-list">${sessions.length ? sessions.map(s => `<div class="session-item"><strong>${s.vendorName || "Unknown"}</strong><br>Inspector: ${s.inspectorName || "Unknown"}<br>Date: ${s.timestamp?.toDate ? s.timestamp.toDate().toLocaleDateString() : "-"}<br><button class="delete-btn" onclick="deleteOne('${s.id}')">Delete</button></div>`).join("") : '<div class="empty-state-compact">No inspection sessions.</div>'}</div>
+        <div class="modal-actions"><button class="delete-btn" onclick="deleteAllStall(decodeURIComponent('${encodeURIComponent(String(stallNumber))}'))">Delete All Sessions</button><button class="close-btn" onclick="closeModal()">Close</button></div>`);
 };
 
-window.deleteOne = async function(id) {
-    await deleteDoc(doc(db, "inspections", id));
-    location.reload();
-};
-
-window.deleteAllInspector = async function(name) {
-    const targets = inspections.filter(i => i.inspectorName === name);
-
-    for (const row of targets) {
-        await deleteDoc(doc(db, "inspections", row.id));
-    }
-
-    location.reload();
-};
-
-window.deleteAllStall = async function(stallNumber) {
-    const targets = inspections.filter(
-        i => String(i.stallNumber) === String(stallNumber)
-    );
-
-    for (const row of targets) {
-        await deleteDoc(doc(db, "inspections", row.id));
-    }
-
-    location.reload();
-};
-
+window.deleteOne = async id => { await deleteDoc(doc(db, "inspections", id)); location.reload(); };
+window.deleteAllInspector = async name => { for (const row of inspections.filter(i => i.inspectorName === name)) await deleteDoc(doc(db, "inspections", row.id)); location.reload(); };
+window.deleteAllStall = async stallNumber => { for (const row of inspections.filter(i => String(i.stallNumber) === String(stallNumber))) await deleteDoc(doc(db, "inspections", row.id)); location.reload(); };
 window.showQR = function(data) {
-    openModal(`
-        <h2 style="text-align:center;">Stall QR Code</h2>
-
-        <div style="display:flex; justify-content:center; margin:20px 0;">
-            <img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(data)}" />
-        </div>
-
-        <p style="text-align:center; color:#64748b;">
-            ${data}
-        </p>
-
-        <div style="text-align:center;">
-            <button class="close-btn" onclick="closeModal()">Close</button>
-        </div>
-    `);
+    openModal(`<h2 style="text-align:center;">Stall QR Code</h2><div style="display:flex;justify-content:center;margin:20px 0;"><img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(data)}" alt="QR code"></div><p style="text-align:center;color:#64748b;">${data}</p><div style="text-align:center;"><button class="close-btn" onclick="closeModal()">Close</button></div>`);
 };
 
-// Wait for HTML to fully load before running the script
-document.addEventListener("DOMContentLoaded", () => {
+function initInformationPage() {
+    const filter = document.getElementById("registryFilter");
+    if (filter) {
+        filter.addEventListener("input", event => {
+            filterText = event.target.value;
+            inspectorPage = 1;
+            stallPage = 1;
+            renderRegistry();
+        });
+    }
     loadPage();
-});
+}
+
+if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", initInformationPage, { once: true });
+else initInformationPage();

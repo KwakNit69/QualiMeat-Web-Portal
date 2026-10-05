@@ -1,3 +1,6 @@
+import { requireAdminSession } from "./auth-guard.js";
+await requireAdminSession();
+
 import { db } from "./firebase-config.js";
 import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -168,7 +171,7 @@ window.goBack = function() {
     }
 };
 
-document.addEventListener("DOMContentLoaded", () => {
+function initInspectionHistoryPage() {
     const searchInput = document.getElementById("searchInput");
     if (searchInput) {
         searchInput.addEventListener("input", e => {
@@ -181,4 +184,10 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
     initPage();
-});
+}
+
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initInspectionHistoryPage, { once: true });
+} else {
+    initInspectionHistoryPage();
+}

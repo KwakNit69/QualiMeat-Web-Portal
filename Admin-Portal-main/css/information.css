@@ -167,3 +167,9 @@ th {
   border: 1px solid #eee;
 }
 .skeleton-row td { padding: 12px; }
+
+/* Page refinement: registry tables and detail dialog */
+.table-card { padding:24px; margin-bottom:20px; }
+.clickable { color:var(--primary-dark); text-decoration:underline; text-underline-offset:3px; }
+.qr-btn { background:var(--secondary); }
+.modal-box { width:min(560px, calc(100vw - 32px)); max-height:85vh; overflow:auto; padding:24px; }

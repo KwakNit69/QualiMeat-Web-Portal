@@ -148,3 +148,12 @@ button {
   font-weight: 700;
   text-decoration: none;
 }
+
+/* Page refinement: registration as a clean two-column service form */
+.register-shell { border:1px solid var(--border); border-radius:var(--radius-lg); overflow:hidden; box-shadow:var(--shadow-md); }
+.register-left { background:var(--primary-dark); }
+.register-right { background:#fff; }
+.feature-box { border-color:rgba(255,255,255,.2); border-radius:var(--radius-sm); }
+.register-right input { border-color:var(--border); border-radius:var(--radius-sm); }
+.register-right button { background:var(--primary); border-radius:var(--radius-sm); }
+@media (max-width:800px) { .register-left { padding:32px; } .register-right { padding:32px 24px; } }

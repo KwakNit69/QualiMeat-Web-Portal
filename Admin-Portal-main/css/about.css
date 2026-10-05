@@ -107,3 +107,12 @@ body {
   color: #64748b;
   line-height: 1.6;
 }
+
+/* Page refinement: concise service-information layout */
+.about-wrapper { background:var(--bg); padding:clamp(24px,5vw,64px); }
+.about-card { max-width:960px; padding:clamp(28px,5vw,56px); border-radius:var(--radius-lg); box-shadow:var(--shadow-sm); border:1px solid var(--border); }
+.green-blob { background:var(--primary-light); }
+.icon-circle { background:var(--primary-light); box-shadow:none; color:var(--primary); border:1px solid #cce9da; }
+.feature-card { background:#F8FBF9; border-color:var(--border); border-radius:var(--radius-sm); }
+.feature-card h3 { color:var(--text); }
+@media (max-width:700px) { .feature-grid { grid-template-columns:1fr; } }

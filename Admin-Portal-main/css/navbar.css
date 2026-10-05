@@ -52,3 +52,12 @@
 .brand-dark {
   color: #1e293b;
 }
+
+/* Public admin pages use the same restrained service header. */
+.navbar { padding:16px clamp(20px,5vw,64px); border-color:var(--border); background:#fff; }
+.brand-logo { font-family:Inter,Arial,sans-serif; }
+.brand-green { color:var(--primary); }
+.brand-dark { color:var(--text); }
+.nav-links a { color:var(--muted); font-size:.88rem; }
+.nav-links a:hover { color:var(--primary-dark); }
+@media (max-width:600px) { .navbar { flex-wrap:wrap; gap:12px; } .nav-links { gap:14px; } }

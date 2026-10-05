@@ -145,3 +145,10 @@ tbody tr:hover {
   border: 1px solid #eee;
 }
 .skeleton-row td { padding: 12px; }
+
+/* Page refinement: risk-led compliance view */
+.critical-card { border-top-color:var(--danger); }
+.warning-card { border-top-color:var(--accent); }
+.report-card, .summary-card { padding:24px; }
+.report-item { border-color:var(--border); color:var(--text); }
+@media (max-width:700px) { .report-grid { grid-template-columns:1fr; } }

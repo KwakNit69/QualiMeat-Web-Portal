@@ -220,3 +220,10 @@ th {
   border: 1px solid #eee;
 }
 .skeleton-row td { padding: 12px; }
+
+/* Page refinement: restrained operational overview */
+.top-actions button { border:1px solid var(--border); border-radius:var(--radius-sm); background:#fff; box-shadow:none; color:var(--text); }
+.top-actions .export { background:var(--primary-light); color:var(--primary-dark); border-color:#cce9da; }
+.chart-card, .performance-card, .table-card { padding:24px; }
+.bar { background:#E6EEE9; } .bar div { background:var(--primary); }
+@media (max-width:700px) { .stats-grid { grid-template-columns:1fr; } .top-actions { width:100%; } .top-actions button { flex:1; } }

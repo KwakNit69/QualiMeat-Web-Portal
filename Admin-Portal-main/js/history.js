@@ -1,3 +1,6 @@
+import { requireAdminSession } from "./auth-guard.js";
+await requireAdminSession();
+
 import { db } from "./firebase-config.js";
 import { collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -80,7 +83,7 @@ function renderHistory(rows) {
         `).join("");
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+function initHistoryPage() {
     const searchInput = document.getElementById("searchInput");
     if (searchInput) {
         searchInput.addEventListener("input", e => {
@@ -93,4 +96,10 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
     loadHistory();
-});
+}
+
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initHistoryPage, { once: true });
+} else {
+    initHistoryPage();
+}

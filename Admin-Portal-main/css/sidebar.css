@@ -90,3 +90,16 @@
   transform: translateY(-1px);
   box-shadow: 0 8px 18px rgba(239,68,68,0.3);
 }
+
+/* Shared shell refinements */
+.sidebar { width:var(--sidebar-width) !important; padding:24px 16px !important; background:#fff !important; border-right:1px solid var(--border) !important; box-shadow:none !important; }
+.logo { padding:0 12px 20px; border-bottom:1px solid var(--border); }
+.logo span, .logo .brand { color:var(--primary) !important; font-size:1.35rem !important; letter-spacing:-.04em; }
+.logo small, .logo .tagline { color:var(--muted) !important; margin-top:5px; font-size:.64rem !important; font-weight:700; }
+.menu { gap:4px !important; margin-top:20px !important; }
+.menu a { display:flex; align-items:center; gap:11px; border-radius:8px !important; color:#4f5f56 !important; padding:11px 12px !important; font-size:.88rem; }
+.menu a .material-symbols-outlined, .logout-btn .material-symbols-outlined { font-size:19px; }
+.menu a:hover { background:#f3f7f4 !important; color:var(--primary-dark) !important; }
+.menu a.active { background:var(--primary-light) !important; color:var(--primary-dark) !important; box-shadow:inset 3px 0 0 var(--primary); }
+.logout-btn { margin-top:auto !important; display:flex; align-items:center; justify-content:center; gap:9px; background:#fff !important; border:1px solid #f0caca !important; color:var(--danger) !important; border-radius:8px !important; }
+.logout-btn:hover { background:var(--danger-light) !important; box-shadow:none !important; }
