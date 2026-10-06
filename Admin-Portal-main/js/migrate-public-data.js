@@ -90,6 +90,10 @@ async function rebuild() {
         status: data.status || "Active"
       };
       if (data.inspectionId) publicData.inspectionId = data.inspectionId;
+      if (data.signatureUrl) publicData.signatureUrl = data.signatureUrl;
+      if (data.issuedByUid) publicData.issuedByUid = data.issuedByUid;
+      if (data.issuedByJobTitle) publicData.issuedByJobTitle = data.issuedByJobTitle;
+      if (data.jobTitle) publicData.jobTitle = data.jobTitle;
 
       certificateOps.push((batch) => batch.set(target, publicData));
     });
