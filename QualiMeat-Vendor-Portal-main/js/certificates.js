@@ -34,7 +34,7 @@ async function loadDetails() {
         document.getElementById("stall-img").src = stallData.stallImageUrl || "https://via.placeholder.com/120";
 
         // 2. GET INSPECTION LOGS (LIVE AGGREGATION & SORTED BY DATE)
-        const logsQuery = query(collection(db, "publicInspectionLogs"), where("stallNumber", "==", stallNumber));
+        const logsQuery = query(collection(db, "inspections"), where("stallNumber", "==", stallNumber));
 
         onSnapshot(logsQuery, (logsSnap) => {
             const certGrid = document.getElementById("cert-grid");
