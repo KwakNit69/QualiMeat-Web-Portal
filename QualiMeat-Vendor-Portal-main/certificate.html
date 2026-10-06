@@ -69,9 +69,13 @@
 
         <div class="signature-section">
             <div class="signature-box">
-                <h3 id="certInspector"></h3>
+                <div class="signature-artwork-wrap" id="signatureArtworkWrap">
+                    <img id="certSignature" class="signature-artwork hidden" alt="Inspector signature">
+                    <div id="signatureFallback" class="signature-fallback">No signature on file</div>
+                </div>
+                <h3 id="certInspector" class="signature-name"></h3>
                 <div class="signature-line"></div>
-                <small>Authorized Meat Inspector</small>
+                <small id="certInspectorRole">Authorized Meat Inspector</small>
             </div>
         </div>
 

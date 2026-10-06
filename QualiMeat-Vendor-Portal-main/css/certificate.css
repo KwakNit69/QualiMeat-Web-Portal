@@ -1,89 +1,97 @@
-/* 1. Sized exactly for A5 Landscape (Half-A4 Wide) */
-.certificate-paper {
-    width: 780px; 
-    min-height: auto; 
-    margin: 15px auto; 
-    background: white;
-    color: #111827; 
-    /* 🔥 Squeezed the top and bottom padding from 25px to 15px */
-    padding: 15px 40px; 
-    border: 1px solid #d1d5db;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif; 
-}
-
-/* OFFICIAL HEADER STYLES */
 .official-header {
     text-align: center;
     line-height: 1.1;
-    margin-bottom: 8px; /* Tightened */
+    margin-bottom: 8px;
+    color: var(--primary-dark, #065f46);
 }
+
 .official-header p {
     margin: 0;
-    font-size: 0.75rem; 
+    font-size: 0.75rem;
 }
+
 .official-header h3 {
     margin: 4px 0 0 0;
     font-size: 0.9rem;
     font-weight: bold;
 }
 
+/* =========================================================
+   CERTIFICATE TITLE
+   ========================================================= */
+
 .cert-title {
     text-align: center;
-    color: #000;
-    margin-bottom: 8px; /* Tightened */
-    font-size: 1.05rem; 
+    color: var(--text, #111827);
+    margin-bottom: 8px;
+    font-size: 1.05rem;
     font-weight: bold;
     text-decoration: underline;
+    border-color: var(--primary, #16a34a);
 }
+
+/* =========================================================
+   OFFICIAL WORDING
+   ========================================================= */
 
 .official-wording {
     text-align: justify;
-    line-height: 1.25; /* Tightened line height */
-    margin-bottom: 10px; /* Tightened */
-    font-size: 0.75rem; 
+    line-height: 1.25;
+    margin-bottom: 10px;
+    font-size: 0.75rem;
     text-indent: 25px;
 }
+
+/* =========================================================
+   CERTIFICATE META
+   ========================================================= */
 
 .meta-line {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 8px; /* Tightened */
+    gap: 12px;
+    margin-bottom: 8px;
     font-size: 0.85rem;
     font-weight: bold;
     color: #000;
 }
 
-/* TABLE - OPTIMIZED FOR MORE ROWS */
+/* =========================================================
+   CERTIFICATE TABLE
+   ========================================================= */
+
 .cert-table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 10px; /* Tightened */
-    table-layout: fixed; 
+    margin-bottom: 10px;
+    table-layout: fixed;
 }
 
 .cert-table th,
 .cert-table td {
     border: 1px solid #000;
-    /* 🔥 Crushed the vertical padding to 3px so 5-6 rows easily fit */
-    padding: 3px 4px; 
+    padding: 3px 4px;
     text-align: center;
-    font-size: 0.75rem; 
+    font-size: 0.75rem;
     word-wrap: break-word;
 }
 
 .cert-table th {
-    background: #f3f4f6;
+    background: var(--primary-light, #ecfdf5);
+    color: var(--primary-dark, #065f46);
     font-weight: bold;
 }
 
-/* COMPLIANCE WARNING BOXES */
+/* =========================================================
+   COMPLIANCE / WARNING BOXES
+   ========================================================= */
+
 .compliance-note {
-    padding: 8px 12px; /* Tightened inside padding */
+    padding: 8px 12px;
     border-radius: 6px;
-    line-height: 1.2; /* Tightened text gap */
-    font-size: 0.75rem; 
-    margin-bottom: 10px; /* Tightened */
+    line-height: 1.2;
+    font-size: 0.75rem;
+    margin-bottom: 10px;
 }
 
 .compliance-note.warning {
@@ -98,81 +106,219 @@
     color: #166534;
 }
 
-/* SIGNATURE */
+/* =========================================================
+   SIGNATURE SECTION
+   Signature intentionally overlaps the inspector name slightly
+   ========================================================= */
+
 .signature-section {
     display: flex;
-    justify-content: flex-end; 
-    margin-top: 15px; /* Tightened */
+    justify-content: flex-end;
+    margin-top: 15px;
     color: #000;
-    /* 🔥 This tells the printer NEVER to slice this block in half! */
-    page-break-inside: avoid; 
+    page-break-inside: avoid;
+    break-inside: avoid;
 }
 
 .signature-box {
-    width: 220px;
+    position: relative;
+    width: 260px;
     text-align: center;
+    padding-top: 2px;
 }
 
+/*
+   Signature area.
+   Negative margin-bottom pulls the signature DOWN
+   so it overlaps the inspector name slightly.
+*/
+.signature-artwork-wrap {
+    height: 78px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    position: relative;
+    z-index: 3;
+
+    /* Recommended overlap amount */
+    margin-bottom: -22px;
+}
+
+.signature-artwork {
+    display: block;
+    max-width: 210px;
+    max-height: 76px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+
+    /*
+       Useful when an uploaded signature still has
+       a very light background.
+    */
+    mix-blend-mode: multiply;
+    filter: contrast(1.08) saturate(0.95);
+
+    position: relative;
+    z-index: 3;
+}
+
+/* Shown only if there is no signature image */
+.signature-fallback {
+    font-size: 0.68rem;
+    color: #6b7280;
+    font-style: italic;
+    padding-bottom: 10px;
+}
+
+/*
+   Name stays visible on top of the lower part of the signature.
+*/
+.signature-name,
 .signature-box h3 {
-    margin: 0;
-    font-size: 0.85rem; /* Slightly smaller name */
+    position: relative;
+    z-index: 4;
+    margin: 0 !important;
+    font-size: 0.85rem;
     font-weight: bold;
     text-transform: uppercase;
+    letter-spacing: 0.02em;
+    line-height: 1.1;
 }
 
+/* Line below inspector name */
 .signature-line {
     width: 100%;
     border-top: 1px solid #000;
-    margin: 4px 0; /* Tightened */
+    margin: 5px 0 4px;
+    position: relative;
+    z-index: 2;
 }
 
 .signature-box small {
     display: block;
     font-size: 0.7rem;
+    position: relative;
+    z-index: 2;
 }
 
-/* FOOTER & BUTTON */
+/* Utility class used by certificate.js */
+.hidden {
+    display: none !important;
+}
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
 .footer-note {
-    margin-top: 15px; /* Tightened */
+    margin-top: 15px;
     text-align: center;
     font-size: 0.65rem;
     color: #6b7280;
 }
 
+/* =========================================================
+   PRINT BUTTON
+   ========================================================= */
+
 .print-btn {
     margin-top: 15px;
     width: 100%;
     padding: 10px;
-    background: #16a34a;
+    background: var(--primary, #16a34a);
     color: white;
     border: none;
     font-weight: bold;
-    border-radius: 8px;
+    border-radius: var(--radius-sm, 8px);
     cursor: pointer;
+    transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
-/* --- PRINTING RULES --- */
-@media print {
-    @page { 
-        size: A5 landscape; 
-        margin: 5mm; /* Minimum possible margin to save space */
+.print-btn:hover {
+    opacity: 0.92;
+}
+
+.print-btn:active {
+    transform: translateY(1px);
+}
+
+/* =========================================================
+   MOBILE RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 600px) {
+    .certificate-paper {
+        width: auto;
+        margin: 16px;
+        padding: 24px 18px;
     }
-    body { background: white; padding: 0; margin: 0; }
-    global-header, .print-btn { display: none !important; }
-    
+
+    .meta-line {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .signature-section {
+        justify-content: center;
+    }
+
+    .signature-box {
+        width: 240px;
+    }
+
+    .signature-artwork {
+        max-width: 195px;
+    }
+}
+
+/* =========================================================
+   PRINTING RULES
+   ========================================================= */
+
+@media print {
+    @page {
+        size: A5 landscape;
+        margin: 5mm;
+    }
+
+    html,
+    body {
+        background: white !important;
+        padding: 0;
+        margin: 0;
+    }
+
+    global-header,
+    .print-btn {
+        display: none !important;
+    }
+
     .certificate-paper {
         width: 100%;
         margin: 0;
         padding: 0;
         border: none;
+        border-radius: 0;
+        box-shadow: none;
         page-break-inside: avoid;
+        break-inside: avoid;
+    }
+
+    .signature-section,
+    .signature-box {
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
+
+    .signature-artwork {
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
+    }
+
+    .cert-table th,
+    .compliance-note {
+        print-color-adjust: exact;
+        -webkit-print-color-adjust: exact;
     }
 }
-
-/* Page refinement: printable, official record hierarchy. */
-.certificate-paper { border:1px solid var(--border); border-radius:var(--radius-md); box-shadow:var(--shadow-md); }
-.official-header { color:var(--primary-dark); }
-.cert-title { color:var(--text); border-color:var(--primary); }
-.cert-table th { background:var(--primary-light); color:var(--primary-dark); }
-.print-btn { background:var(--primary); border-radius:var(--radius-sm); }
-@media (max-width:600px) { .certificate-paper { margin:16px; padding:24px 18px; } .meta-line { flex-direction:column; gap:8px; } }

@@ -4,9 +4,88 @@ import {
     doc,
     getDoc,
     getDocs,
+    limit,
     query,
     where
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+function escapeHtml(value) {
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+}
+
+async function resolveInspectorSignature(certificate = {}, fallbackInspectorName = "") {
+    if (certificate.signatureUrl) {
+        return {
+            signatureUrl: certificate.signatureUrl,
+            jobTitle: certificate.issuedByJobTitle || certificate.jobTitle || "Authorized Meat Inspector"
+        };
+    }
+
+    if (certificate.issuedByUid) {
+        try {
+            const userSnap = await getDoc(doc(db, "users", certificate.issuedByUid));
+            if (userSnap.exists()) {
+                const user = userSnap.data();
+                return {
+                    signatureUrl: user.signatureUrl || "",
+                    jobTitle: user.jobTitle || certificate.issuedByJobTitle || "Authorized Meat Inspector"
+                };
+            }
+        } catch (error) {
+            console.warn("Unable to load inspector by UID:", error);
+        }
+    }
+
+    if (fallbackInspectorName) {
+        try {
+            const byNameQuery = query(
+                collection(db, "users"),
+                where("fullName", "==", fallbackInspectorName),
+                limit(1)
+            );
+            const byNameSnap = await getDocs(byNameQuery);
+            if (!byNameSnap.empty) {
+                const user = byNameSnap.docs[0].data();
+                return {
+                    signatureUrl: user.signatureUrl || "",
+                    jobTitle: user.jobTitle || certificate.issuedByJobTitle || "Authorized Meat Inspector"
+                };
+            }
+        } catch (error) {
+            console.warn("Unable to load inspector by name:", error);
+        }
+    }
+
+    return {
+        signatureUrl: "",
+        jobTitle: certificate.issuedByJobTitle || certificate.jobTitle || "Authorized Meat Inspector"
+    };
+}
+
+function renderSignature(signatureUrl, inspectorName, jobTitle) {
+    const signatureImg = document.getElementById("certSignature");
+    const signatureFallback = document.getElementById("signatureFallback");
+    const inspectorField = document.getElementById("certInspector");
+    const roleField = document.getElementById("certInspectorRole");
+
+    inspectorField.textContent = inspectorName || "N/A";
+    roleField.textContent = jobTitle || "Authorized Meat Inspector";
+
+    if (signatureUrl) {
+        signatureImg.src = signatureUrl;
+        signatureImg.classList.remove("hidden");
+        signatureFallback.classList.add("hidden");
+    } else {
+        signatureImg.removeAttribute("src");
+        signatureImg.classList.add("hidden");
+        signatureFallback.classList.remove("hidden");
+    }
+}
 
 async function loadCertificate() {
     const params = new URLSearchParams(window.location.search);
@@ -29,26 +108,32 @@ async function loadCertificate() {
     const certificateSnap = await getDocs(certificateQuery);
     const certificateMeta = document.getElementById("certificateMeta");
 
+    let certificate = null;
+    let certificateDocId = "";
+
     if (!certificateSnap.empty) {
         const certificateDoc = certificateSnap.docs[0];
-        const certificate = certificateDoc.data();
+        certificate = certificateDoc.data();
+        certificateDocId = certificateDoc.id;
         const validUntil = certificate.validUntil?.toDate
             ? certificate.validUntil.toDate().toLocaleDateString()
             : "-";
         certificateMeta.innerHTML = `
-            <strong>Certificate ID:</strong> ${certificate.certificateId || certificateDoc.id}
-            &nbsp; • &nbsp; <strong>Status:</strong> ${certificate.status || "Active"}
-            &nbsp; • &nbsp; <strong>Valid Until:</strong> ${validUntil}
+            <strong>Certificate ID:</strong> ${escapeHtml(certificate.certificateId || certificateDoc.id)}
+            &nbsp; • &nbsp; <strong>Status:</strong> ${escapeHtml(certificate.status || "Active")}
+            &nbsp; • &nbsp; <strong>Valid Until:</strong> ${escapeHtml(validUntil)}
         `;
     } else {
         certificateMeta.innerHTML = `<strong>Certificate status:</strong> No active public certificate was issued for this inspection.`;
     }
 
-    // Populate Metadata
-    document.getElementById("certInspector").textContent = data.inspectorName || "N/A";
+    const inspectorName = data.inspectorName || (certificate?.issuedBy) || "N/A";
     document.getElementById("certStall").textContent = data.stallNumber || "-";
     document.getElementById("certVendor").textContent = data.vendorName || "Unknown";
-    
+
+    const signatureInfo = await resolveInspectorSignature(certificate || {}, inspectorName);
+    renderSignature(signatureInfo.signatureUrl, inspectorName, signatureInfo.jobTitle);
+
     // Format Date
     const dateObj = data.timestamp ? data.timestamp.toDate() : new Date();
     document.getElementById("certDate").textContent = dateObj.toLocaleDateString();
@@ -56,17 +141,17 @@ async function loadCertificate() {
     let hasSpoiled = false;
     let aggregated = {};
 
-    // 🔥 CENSUS LOGIC: Group scans by cut type
     if (data.scanHistory) {
         data.scanHistory.forEach(scan => {
             const cut = scan.cut || "Unknown Cut";
             if (!aggregated[cut]) {
                 aggregated[cut] = { total: 0, fresh: 0, spoiled: 0 };
             }
-            
+
             aggregated[cut].total++;
-            
-            if (scan.label === "SPOILED") {
+
+            const label = String(scan.label || "").trim().toUpperCase();
+            if (label === "SPOILED") {
                 aggregated[cut].spoiled++;
                 hasSpoiled = true;
             } else {
@@ -75,12 +160,11 @@ async function loadCertificate() {
         });
     }
 
-    // Build the summary table rows
     let rowsHTML = "";
     for (const [cut, stats] of Object.entries(aggregated)) {
         rowsHTML += `
             <tr>
-                <td style="font-weight: bold;">${cut}</td>
+                <td style="font-weight: bold;">${escapeHtml(cut)}</td>
                 <td>${stats.total}</td>
                 <td class="fresh">${stats.fresh}</td>
                 <td class="spoiled">${stats.spoiled}</td>
@@ -88,14 +172,12 @@ async function loadCertificate() {
         `;
     }
 
-    // Fallback if no scans
     if (rowsHTML === "") {
         rowsHTML = `<tr><td colspan="4">No items scanned.</td></tr>`;
     }
 
     document.getElementById("certRows").innerHTML = rowsHTML;
 
-    // Compliance Note
     const note = document.getElementById("complianceNote");
     if (hasSpoiled) {
         note.innerHTML = `
