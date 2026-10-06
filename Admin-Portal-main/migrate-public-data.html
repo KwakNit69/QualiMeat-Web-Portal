@@ -13,7 +13,7 @@
     }
   </script>
 
-  <title>QualiMeat - Rebuild Public Data</title>
+  <title>QualiMeat - Consolidate Inspection Data</title>
   <style>
     body { font-family: Arial, sans-serif; background:#f5f7f6; margin:0; padding:40px 20px; color:#17211c; }
     .card { max-width:760px; margin:0 auto; background:white; border-radius:16px; padding:28px; box-shadow:0 8px 30px rgba(0,0,0,.08); }
@@ -35,10 +35,10 @@
 </head>
 <body>
   <main class="card">
-    <h1>Rebuild Vendor/Public Firestore Data</h1>
-    <p>This one-time admin utility rebuilds <code>publicInspectionLogs</code> and <code>publicCertificates</code> from the private <code>inspections</code> and <code>certificates</code> collections.</p>
-    <div class="warning"><strong>Important:</strong> It first removes existing documents from the two public collections to avoid duplicate old data. Private inspection/certificate records are never deleted.</div>
-    <button id="migrateBtn">Rebuild public data</button>
+    <h1>Consolidate Firestore Inspection Data</h1>
+    <p>This one-time admin utility makes <code>inspections</code> the single source of truth. It normalizes existing inspection status fields and merges matching legacy <code>certificates</code> records into each inspection document.</p>
+    <div class="warning"><strong>Safe migration:</strong> This does not delete existing inspection or certificate documents. After you verify the new portal works, the legacy certificate/public collections can be removed separately if you no longer need them.</div>
+    <button id="migrateBtn">Consolidate into inspections</button>
     <p><a href="dashboard.html">Back to dashboard</a></p>
     <div id="status">Waiting for administrator authorization…</div>
   </main>

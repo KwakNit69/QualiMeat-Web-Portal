@@ -22,85 +22,71 @@ async function commitOperations(operations, chunkSize = 400) {
   }
 }
 
-function sanitizeScanHistory(history) {
-  if (!Array.isArray(history)) return [];
-  return history.map((scan) => ({
-    cut: scan?.cut || "Unknown Cut",
-    label: scan?.label || "Unknown",
-    ...(scan?.imageUrl ? { imageUrl: scan.imageUrl } : {})
-  }));
+function normalizeHistory(history) {
+  return Array.isArray(history) ? history : [];
 }
 
-async function clearCollection(name) {
-  const snap = await getDocs(collection(db, name));
-  const operations = snap.docs.map((item) => (batch) => batch.delete(item.ref));
-  await commitOperations(operations);
-  return snap.size;
-}
-
-async function rebuild() {
+async function consolidate() {
   button.disabled = true;
-  status.textContent = "Starting rebuild…";
+  status.textContent = "Starting consolidation…";
 
   try {
-    const removedLogs = await clearCollection("publicInspectionLogs");
-    const removedCerts = await clearCollection("publicCertificates");
-    log(`Removed ${removedLogs} old public inspection document(s).`);
-    log(`Removed ${removedCerts} old public certificate document(s).`);
-
     const inspections = await getDocs(collection(db, "inspections"));
     const inspectionOps = [];
 
     inspections.forEach((item) => {
       const data = item.data();
-      const safeHistory = sanitizeScanHistory(data.scanHistory);
-      const passed = safeHistory.length > 0 && safeHistory.every(
-        (scan) => String(scan.label).toLowerCase() === "fresh"
+      const history = normalizeHistory(data.scanHistory);
+      const passed = history.length > 0 && history.every(
+        (scan) => String(scan?.label || "").trim().toLowerCase() === "fresh"
       );
 
-      const target = doc(db, "publicInspectionLogs", item.id);
-      inspectionOps.push((batch) => batch.set(target, {
+      inspectionOps.push((batch) => batch.set(item.ref, {
         inspectionId: item.id,
-        vendorName: data.vendorName || "",
-        stallNumber: data.stallNumber || "",
-        inspectorName: data.inspectorName || "",
-        scanHistory: safeHistory,
-        resultStatus: passed ? "PASSED" : "FLAGGED",
-        certificateStatus: passed ? "ACTIVE" : "NOT_ISSUED",
-        timestamp: data.timestamp || null
-      }));
+        isPassed: passed,
+        resultStatus: passed ? "PASSED" : "FLAGGED"
+      }, { merge: true }));
     });
 
     await commitOperations(inspectionOps);
-    log(`Created ${inspections.size} public inspection document(s).`);
+    log(`Normalized ${inspections.size} inspection document(s).`);
 
     const certificates = await getDocs(collection(db, "certificates"));
     const certificateOps = [];
+    let linked = 0;
+    let skipped = 0;
 
     certificates.forEach((item) => {
       const data = item.data();
-      const target = doc(db, "publicCertificates", item.id);
-      const publicData = {
-        certificateId: item.id,
-        vendorName: data.vendorName || "",
-        stallNumber: data.stallNumber || "",
-        issuedBy: data.issuedBy || "",
-        issuedAt: data.issuedAt || null,
-        validUntil: data.validUntil || null,
-        status: data.status || "Active"
-      };
-      if (data.inspectionId) publicData.inspectionId = data.inspectionId;
-      if (data.signatureUrl) publicData.signatureUrl = data.signatureUrl;
-      if (data.issuedByUid) publicData.issuedByUid = data.issuedByUid;
-      if (data.issuedByJobTitle) publicData.issuedByJobTitle = data.issuedByJobTitle;
-      if (data.jobTitle) publicData.jobTitle = data.jobTitle;
+      const inspectionId = String(data.inspectionId || "").trim();
+      if (!inspectionId) {
+        skipped++;
+        return;
+      }
 
-      certificateOps.push((batch) => batch.set(target, publicData));
+      const target = doc(db, "inspections", inspectionId);
+      certificateOps.push((batch) => batch.set(target, {
+        certificate: {
+          certificateId: data.certificateId || item.id,
+          inspectionId,
+          vendorName: data.vendorName || "",
+          stallNumber: data.stallNumber || "",
+          issuedBy: data.issuedBy || "",
+          issuedByUid: data.issuedByUid || null,
+          issuedByJobTitle: data.issuedByJobTitle || data.jobTitle || "Inspector",
+          signatureUrl: data.signatureUrl || null,
+          issuedAt: data.issuedAt || null,
+          validUntil: data.validUntil || null,
+          status: data.status || "Active"
+        }
+      }, { merge: true }));
+      linked++;
     });
 
     await commitOperations(certificateOps);
-    log(`Created ${certificates.size} public certificate document(s).`);
-    log("DONE. The Vendor Portal can now use only public-safe collections.");
+    log(`Merged ${linked} legacy certificate(s) into inspections.`);
+    if (skipped) log(`Skipped ${skipped} certificate(s) without an inspectionId.`);
+    log("DONE. The app and Vendor Portal can now use the inspections collection directly.");
   } catch (error) {
     console.error(error);
     log(`ERROR: ${error.message || error}`);
@@ -112,5 +98,5 @@ async function rebuild() {
 await requireAdminSession();
 status.textContent = "Administrator verified. Click the button when ready.";
 button.addEventListener("click", () => {
-  if (confirm("Rebuild the two public collections from private data?")) rebuild();
+  if (confirm("Consolidate legacy certificate data into the inspections collection?")) consolidate();
 });
